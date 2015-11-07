@@ -38,7 +38,7 @@ public class MyClass
         else
         {
             long value = list[(int) (index - 1)] + list[(int) (index - 2)];
-            long[] array = Runtime.$concat(list, value);
+            long[] array = Runtime.ArraysRuntime.$concat(list, value);
 
             return fibo2(index + 1, limit, array);
         }
