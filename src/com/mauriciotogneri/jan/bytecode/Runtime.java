@@ -13,117 +13,147 @@ public class Runtime
 
         // ----------------------------
 
-        int[][] ccc = new int[][] {new int[] {1, 2}, new int[] {3, 4}, new int[] {5, 6}};
-        int[][] ddd = ArraysRuntime.$concat(ccc, new int[] {7, 8});
-git        System.out.println(Arrays.toString(ddd));
+        int[] a = new int[] {1, 2};
+        int[] b = new int[] {3, 4};
+        int[] c = new int[] {5, 6};
+        int[] d = new int[] {7, 8};
+        int[] e = new int[] {11, 22};
+        int[] f = new int[] {33, 44};
+
+        int[][] g = new int[][] {a, b};
+        int[][] h = new int[][] {c, d};
+        int[][] i = new int[][] {e, f};
+
+        int[][][] ccc = new int[][][] {g, h};
+        int[][][] ddd = ArraysRuntime.$concat(ccc, i);
+        System.out.println(Arrays.toString(ddd));
     }
 
     public static class ArraysRuntime
     {
-        public static char[] $concat(char[] array, char element)
+        @SuppressWarnings("unused")
+        public static char[] $concat(final char[] array, final char element)
         {
-            char[] newArray = new char[array.length + 1];
+            final char[] newArray = new char[array.length + 1];
             System.arraycopy(array, 0, newArray, 0, array.length);
             newArray[array.length] = element;
 
             return newArray;
         }
 
-        public static int[] $concat(int[] array, int element)
+        @SuppressWarnings("unused")
+        public static int[] $concat(final int[] array, final int element)
         {
-            int[] newArray = new int[array.length + 1];
+            final int[] newArray = new int[array.length + 1];
             System.arraycopy(array, 0, newArray, 0, array.length);
             newArray[array.length] = element;
 
             return newArray;
         }
 
-        public static long[] $concat(long[] array, long element)
+        @SuppressWarnings("unused")
+        public static long[] $concat(final long[] array, final long element)
         {
-            long[] newArray = new long[array.length + 1];
+            final long[] newArray = new long[array.length + 1];
             System.arraycopy(array, 0, newArray, 0, array.length);
             newArray[array.length] = element;
 
             return newArray;
         }
 
-        public static float[] $concat(float[] array, float element)
+        @SuppressWarnings("unused")
+        public static float[] $concat(final float[] array, final float element)
         {
-            float[] newArray = new float[array.length + 1];
+            final float[] newArray = new float[array.length + 1];
             System.arraycopy(array, 0, newArray, 0, array.length);
             newArray[array.length] = element;
 
             return newArray;
         }
 
-        public static double[] $concat(double[] array, double element)
+        @SuppressWarnings("unused")
+        public static double[] $concat(final double[] array, final double element)
         {
-            double[] newArray = new double[array.length + 1];
+            final double[] newArray = new double[array.length + 1];
             System.arraycopy(array, 0, newArray, 0, array.length);
             newArray[array.length] = element;
 
             return newArray;
         }
 
-        public static boolean[] $concat(boolean[] array, boolean element)
+        @SuppressWarnings("unused")
+        public static boolean[] $concat(final boolean[] array, final boolean element)
         {
-            boolean[] newArray = new boolean[array.length + 1];
+            final boolean[] newArray = new boolean[array.length + 1];
             System.arraycopy(array, 0, newArray, 0, array.length);
+            newArray[array.length] = element;
+
+            return newArray;
+        }
+
+        @SuppressWarnings({"unchecked", "unused"})
+        public static <T> T[] $concat(final T[] array, final T element)
+        {
+            final T[] newArray = $cloneArray(array, array.length + 1);
             newArray[array.length] = element;
 
             return newArray;
         }
 
         @SuppressWarnings("unchecked")
-        public static <T> T[] $concat(T[] array, T element)
+        public static <T> T $cloneArray(final T array)
         {
-            T[] newArray = $cloneArray(array, array.length + 1);
-            newArray[array.length] = element;
-
-            return newArray;
-        }
-
-        @SuppressWarnings("unchecked")
-        public static <T, E> T $clone(T object)
-        {
-            if (object instanceof char[])
+            if (array instanceof char[])
             {
-                return (T) ((char[]) object).clone();
+                return (T) ((char[]) array).clone();
             }
-            else if (object instanceof int[])
+            else if (array instanceof int[])
             {
-                return (T) ((int[]) object).clone();
+                return (T) ((int[]) array).clone();
             }
-            else if (object instanceof long[])
+            else if (array instanceof long[])
             {
-                return (T) ((long[]) object).clone();
+                return (T) ((long[]) array).clone();
             }
-            else if (object instanceof float[])
+            else if (array instanceof float[])
             {
-                return (T) ((float[]) object).clone();
+                return (T) ((float[]) array).clone();
             }
-            else if (object instanceof double[])
+            else if (array instanceof double[])
             {
-                return (T) ((double[]) object).clone();
+                return (T) ((double[]) array).clone();
             }
-            else if (object instanceof boolean[])
+            else if (array instanceof boolean[])
             {
-                return (T) ((boolean[]) object).clone();
+                return (T) ((boolean[]) array).clone();
             }
-            else if (object.getClass().isArray())
+            else if (array.getClass().isArray())
             {
-                E[] array = (E[]) object;
-
-                return (T) $cloneArray(array, array.length);
+                return (T) $cloneArray(array, Array.getLength(array));
             }
             else
             {
-                return object;
+                throw new RuntimeException("Error cloning array");
             }
         }
 
         @SuppressWarnings("unchecked")
-        public static <T> T $createArray(Class<?> clazz, int size)
+        private static <T, E> E[] $cloneArray(final T array, final int size)
+        {
+            final E[] source = (E[]) array;
+            final int sourceLength = source.length;
+            final E[] newArray = $createArray(array.getClass(), size);
+
+            for (int i = 0; i < sourceLength; i++)
+            {
+                newArray[i] = $cloneArray(source[i]);
+            }
+
+            return newArray;
+        }
+
+        @SuppressWarnings("unchecked")
+        public static <T> T $createArray(final Class<?> clazz, final int size)
         {
             if (clazz.equals(char[].class))
             {
@@ -155,22 +185,8 @@ git        System.out.println(Arrays.toString(ddd));
             }
             else
             {
-                return null;
+                throw new RuntimeException("Error creating array");
             }
-        }
-
-        @SuppressWarnings({"unchecked", "ConstantConditions"})
-        private static <T, E> E[] $cloneArray(T array, int size)
-        {
-            E[] source = (E[]) array;
-            E[] newArray = $createArray(array.getClass(), size);
-
-            for (int i = 0; i < source.length; i++)
-            {
-                newArray[i] = $clone(source[i]);
-            }
-
-            return newArray;
         }
     }
 }
