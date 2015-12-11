@@ -17,10 +17,13 @@ public class Test
     public static final callTwice callTwice = new callTwice();
     public static final multiplicator multiplicator = new multiplicator();
 
-    public static class factorial implements Function1<Long, Long>
+    public static final custom custom = new custom();
+    public static final custom2 custom2 = new custom2();
+
+    public static class factorial implements F1<Long, Long>
     {
         @Override
-        public Long call(Long n)
+        public Long call(final Long n)
         {
             if (n <= 0)
             {
@@ -33,10 +36,10 @@ public class Test
         }
     }
 
-    public static class fibonacci implements Function1<Long, long[]>
+    public static class fibonacci implements F1<Long, long[]>
     {
         @Override
-        public long[] call(Long n)
+        public long[] call(final Long n)
         {
             return fibo2.call(0L, n, new long[] {});
         }
@@ -45,7 +48,7 @@ public class Test
     public static class fibo2 implements Function3<Long, Long, long[], long[]>
     {
         @Override
-        public long[] call(Long index, Long limit, long[] list)
+        public long[] call(final Long index, final Long limit, final long[] list)
         {
             if (index >= limit)
             {
@@ -76,10 +79,10 @@ public class Test
     // + function x map function xs
 
     @SuppressWarnings("unchecked")
-    public static class map<A, B> implements Function2<Function1<A, B>, Array<A>, Array<B>>
+    public static class map<A, B> implements Function2<F1<A, B>, Array<A>, Array<B>>
     {
         @Override
-        public Array<B> call(Function1<A, B> function, Array<A> array)
+        public Array<B> call(final F1<A, B> function, final Array<A> array)
         {
             if (array.length() == 0)
             {
@@ -94,27 +97,27 @@ public class Test
             }
         }
     }
-    
+
     @SuppressWarnings("unchecked")
-    public static class multiplyByTwo implements Function1<Num, Num>
+    public static class multiplyByTwo implements F1<Num, Num>
     {
         @Override
-        public Num call(Num number)
+        public Num call(final Num number)
         {
             return number.mul(new Num(2));
         }
     }
 
-    public static class callTwice<A> implements Function2<Function1<A, A>, A, A>
+    public static class callTwice<A> implements Function2<F1<A, A>, A, A>
     {
         @Override
-        public A call(final Function1<A, A> function, final A a)
+        public A call(final F1<A, A> function, final A a)
         {
             return function.call(function.call(a));
         }
     }
 
-    public static class duplicate implements Function1<Num, Num>
+    public static class duplicate implements F1<Num, Num>
     {
         @Override
         public Num call(final Num num)
@@ -123,7 +126,7 @@ public class Test
         }
     }
 
-    public static class pi implements Function0<Num>
+    public static class pi implements F0<Num>
     {
         @Override
         public Num call()
@@ -139,17 +142,183 @@ public class Test
     // _ m3 multiplicator 3
     // m3 7
 
-    public static class multiplicator implements Function1<Num, Function1<Num, Num>>
+    // test2
+    // multiplicator 3 7
+
+    public static class multiplicator implements F1<Num, F1<Num, Num>>
     {
         @Override
-        public Function1<Num, Num> call(final Num param)
+        public F1<Num, Num> call(final Num param)
         {
-            return new Function1<Num, Num>()
+            return new F1<Num, Num>()
             {
                 @Override
-                public Num call(Num num)
+                public Num call(final Num num)
                 {
                     return param.mul(num);
+                }
+            };
+        }
+    }
+
+    // - + * 3 2 7 9
+    // - + *3 2 7 9
+    // - + 6 7 9
+    // - +6 7 9
+    // - 13 9
+    // -13 9
+    // 4
+
+    public static class $mul implements F1<F0<Num>, F1<F0<Num>, F0<Num>>>
+    {
+        public static final $mul instance = new $mul();
+
+        @Override
+        public F1<F0<Num>, F0<Num>> call(final F0<Num> a)
+        {
+            return new F1<F0<Num>, F0<Num>>()
+            {
+                @Override
+                public F0<Num> call(final F0<Num> b)
+                {
+                    return new F0<Num>()
+                    {
+                        @Override
+                        public Num call()
+                        {
+                            return a.call().mul(b.call());
+                        }
+                    };
+                }
+            };
+        }
+    }
+
+    public static class $add implements F1<F0<Num>, F1<F0<Num>, F0<Num>>>
+    {
+        public static final $add instance = new $add();
+
+        @Override
+        public F1<F0<Num>, F0<Num>> call(final F0<Num> a)
+        {
+            return new F1<F0<Num>, F0<Num>>()
+            {
+                @Override
+                public F0<Num> call(final F0<Num> b)
+                {
+                    return new F0<Num>()
+                    {
+                        @Override
+                        public Num call()
+                        {
+                            return a.call().add(b.call());
+                        }
+                    };
+                }
+            };
+        }
+    }
+
+    // custom % a % b % c
+    // + * c b a
+
+    public static class custom implements F1<Num, F1<Num, F1<Num, Num>>>
+    {
+        @Override
+        public F1<Num, F1<Num, Num>> call(final Num a)
+        {
+            return new F1<Num, F1<Num, Num>>()
+            {
+                @Override
+                public F1<Num, Num> call(final Num b)
+                {
+                    return new F1<Num, Num>()
+                    {
+                        @Override
+                        public Num call(final Num c)
+                        {
+                            return c.mul(b).add(a);
+                        }
+                    };
+                }
+            };
+        }
+    }
+
+    public static class custom2 implements F1<F0<Num>, F1<F0<Num>, F1<F0<Num>, F0<Num>>>>
+    {
+        @Override
+        public F1<F0<Num>, F1<F0<Num>, F0<Num>>> call(final F0<Num> a)
+        {
+            return new F1<F0<Num>, F1<F0<Num>, F0<Num>>>()
+            {
+                @Override
+                public F1<F0<Num>, F0<Num>> call(final F0<Num> b)
+                {
+                    return new F1<F0<Num>, F0<Num>>()
+                    {
+                        @Override
+                        public F0<Num> call(final F0<Num> c)
+                        {
+                            return new F0<Num>()
+                            {
+                                @Override
+                                public Num call()
+                                {
+                                    return c.call().mul(b.call()).add(a.call());
+                                }
+                            };
+                        }
+                    };
+                }
+            };
+        }
+    }
+
+    // mul3 % _ %
+    // * 3
+
+    public static class mul3 implements F1<F0<Num>, F0<Num>>
+    {
+        public static final mul3 instance = new mul3();
+
+        @Override
+        public F0<Num> call(final F0<Num> _1)
+        {
+            return new F0<Num>()
+            {
+                @Override
+                public Num call()
+                {
+                    return new Num(3).mul(_1.call());
+                }
+            };
+        }
+    }
+
+    // mul3AndAdd % _ % _ %
+    // + * 3
+
+    public static class mul3AndAdd implements F1<F0<Num>, F1<F0<Num>, F0<Num>>>
+    {
+        public static final mul3AndAdd instance = new mul3AndAdd();
+
+        @Override
+        public F1<F0<Num>, F0<Num>> call(final F0<Num> _1)
+        {
+            return new F1<F0<Num>, F0<Num>>()
+            {
+                @Override
+                public F0<Num> call(final F0<Num> _2)
+                {
+                    return new F0<Num>()
+                    {
+                        @Override
+                        public Num call()
+                        {
+                            return new Num(3).mul(_1.call()).add(_2.call());
+                        }
+                    };
                 }
             };
         }
@@ -158,16 +327,16 @@ public class Test
     @SuppressWarnings("unchecked")
     public static void main(String[] args)
     {
-        System.out.println(Arrays.toString(fibonacci.call(10L)));
+        print(Arrays.toString(fibonacci.call(10L)));
 
-        System.out.println(pi.call());
+        print(pi.call());
 
-        System.out.println(duplicate.call(new Num(-0.123)));
+        print(duplicate.call(new Num(-0.123)));
 
         Array<Num> array = new Array<>(new Num(1), new Num(2.4), new Num(3));
-        System.out.println(map.call(multiplyByTwo, array));
+        print(map.call(multiplyByTwo, array));
 
-        System.out.println(callTwice.call(new Function1<Num, Num>()
+        print(callTwice.call(new F1<Num, Num>()
         {
             @Override
             public Num call(Num num)
@@ -176,17 +345,64 @@ public class Test
             }
         }, new Num(3)));
 
-        Function1<Num, Num> multiplicator3 = multiplicator.call(new Num(3));
-        System.out.println(multiplicator3.call(new Num(7)));
-        System.out.println(multiplicator3.call(new Num(8)));
+        F1<Num, Num> multiplicator3 = multiplicator.call(new Num(3));
+        print(multiplicator3.call(new Num(7)));
+        print(multiplicator3.call(new Num(8)));
+
+        F0<Num> a = new F0<Num>()
+        {
+            @Override
+            public Num call()
+            {
+                return new Num(5);
+            }
+        };
+        F0<Num> b = new F0<Num>()
+        {
+            @Override
+            public Num call()
+            {
+                return new Num(7);
+            }
+        };
+        F0<Num> c = new F0<Num>()
+        {
+            @Override
+            public Num call()
+            {
+                return new Num(2);
+            }
+        };
+        // custom2 5 7 2
+        print(custom2.call(a).call(b).call(c));
+
+        F0<Num> d = new F0<Num>()
+        {
+            @Override
+            public Num call()
+            {
+                return new Num(7);
+            }
+        };
+        print(mul3.instance.call(d));
     }
 
-    public interface Function0<R>
+    private static void print(F0<?> function)
+    {
+        System.out.println(function.call());
+    }
+
+    private static void print(Object object)
+    {
+        System.out.println(object);
+    }
+
+    public interface F0<R>
     {
         R call();
     }
 
-    public interface Function1<P1, R>
+    public interface F1<P1, R>
     {
         R call(P1 p1);
     }
