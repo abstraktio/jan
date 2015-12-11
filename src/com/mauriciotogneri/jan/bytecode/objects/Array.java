@@ -23,26 +23,9 @@ public class Array<T>
     }
 
     @SuppressWarnings("unchecked")
-    public T index(int index)
+    public T get(int index)
     {
         return (T) data[index];
-    }
-
-    public Array<T> remove(int index)
-    {
-        Array<T> result = new Array<>(data.length - 1);
-
-        int position = 0;
-
-        for (int i = 0; i < data.length; i++)
-        {
-            if (i != index)
-            {
-                result.data[position++] = clone(data[i]);
-            }
-        }
-
-        return result;
     }
 
     public int length()
@@ -77,9 +60,21 @@ public class Array<T>
         return result;
     }
 
-    public Array<T> cloneArray()
+    public Array<T> remove(int index)
     {
-        return clone(this);
+        Array<T> result = new Array<>(data.length - 1);
+
+        int position = 0;
+
+        for (int i = 0; i < data.length; i++)
+        {
+            if (i != index)
+            {
+                result.data[position++] = clone(data[i]);
+            }
+        }
+
+        return result;
     }
 
     @SuppressWarnings("unchecked")

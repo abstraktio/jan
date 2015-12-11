@@ -4,8 +4,6 @@ import com.mauriciotogneri.jan.compiler.lexical.Token;
 
 public class SyntacticException extends RuntimeException
 {
-	private static final long serialVersionUID = -4336303078381836231L;
-	
 	public SyntacticException(String message, Token token)
 	{
 		super(message + " '" + token + "' at: [" + token.line + ", " + token.column + "]");

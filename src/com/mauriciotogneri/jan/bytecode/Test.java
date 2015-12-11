@@ -14,13 +14,13 @@ public class Test
     public static final map map = new map();
     public static final multiplyByTwo multiplyByTwo = new multiplyByTwo();
     public static final duplicate duplicate = new duplicate();
-    public static final applyTwice applyTwice = new applyTwice();
+    public static final callTwice callTwice = new callTwice();
     public static final multiplicator multiplicator = new multiplicator();
 
     public static class factorial implements Function1<Long, Long>
     {
         @Override
-        public Long apply(Long n)
+        public Long call(Long n)
         {
             if (n <= 0)
             {
@@ -28,7 +28,7 @@ public class Test
             }
             else
             {
-                return n * factorial.apply(n - 1);
+                return n * factorial.call(n - 1);
             }
         }
     }
@@ -36,16 +36,16 @@ public class Test
     public static class fibonacci implements Function1<Long, long[]>
     {
         @Override
-        public long[] apply(Long n)
+        public long[] call(Long n)
         {
-            return fibo2.apply(0L, n, new long[] {});
+            return fibo2.call(0L, n, new long[] {});
         }
     }
 
     public static class fibo2 implements Function3<Long, Long, long[], long[]>
     {
         @Override
-        public long[] apply(Long index, Long limit, long[] list)
+        public long[] call(Long index, Long limit, long[] list)
         {
             if (index >= limit)
             {
@@ -53,18 +53,18 @@ public class Test
             }
             else if (index == 0)
             {
-                return fibo2.apply(1L, limit, new long[] {1L});
+                return fibo2.call(1L, limit, new long[] {1L});
             }
             else if (index == 1)
             {
-                return fibo2.apply(2L, limit, new long[] {1L, 1L});
+                return fibo2.call(2L, limit, new long[] {1L, 1L});
             }
             else
             {
                 Long value = list[(int) (index - 1)] + list[(int) (index - 2)];
                 long[] array = Runtime.ArraysRuntime.$concat(list, value);
 
-                return fibo2.apply(index + 1, limit, array);
+                return fibo2.call(index + 1, limit, array);
             }
         }
     }
@@ -79,7 +79,7 @@ public class Test
     public static class map<A, B> implements Function2<Function1<A, B>, Array<A>, Array<B>>
     {
         @Override
-        public Array<B> apply(Function1<A, B> function, Array<A> array)
+        public Array<B> call(Function1<A, B> function, Array<A> array)
         {
             if (array.length() == 0)
             {
@@ -87,41 +87,37 @@ public class Test
             }
             else
             {
-                A x = array.index(0);
+                A x = array.get(0);
                 Array<A> xs = array.remove(0);
 
-                return map.apply(function, xs).concatenateBefore(function.apply(x));
+                return map.call(function, xs).concatenateBefore(function.call(x));
             }
         }
     }
-
-    // create class Num
-    // create class Char
-    // create class Bool
-
+    
     @SuppressWarnings("unchecked")
     public static class multiplyByTwo implements Function1<Num, Num>
     {
         @Override
-        public Num apply(Num number)
+        public Num call(Num number)
         {
             return number.mul(new Num(2));
         }
     }
 
-    public static class applyTwice<A> implements Function2<Function1<A, A>, A, A>
+    public static class callTwice<A> implements Function2<Function1<A, A>, A, A>
     {
         @Override
-        public A apply(final Function1<A, A> function, final A a)
+        public A call(final Function1<A, A> function, final A a)
         {
-            return function.apply(function.apply(a));
+            return function.call(function.call(a));
         }
     }
 
     public static class duplicate implements Function1<Num, Num>
     {
         @Override
-        public Num apply(final Num num)
+        public Num call(final Num num)
         {
             return num.mul(new Num(2));
         }
@@ -130,7 +126,7 @@ public class Test
     public static class pi implements Function0<Num>
     {
         @Override
-        public Num apply()
+        public Num call()
         {
             return new Num(3.14159);
         }
@@ -146,12 +142,12 @@ public class Test
     public static class multiplicator implements Function1<Num, Function1<Num, Num>>
     {
         @Override
-        public Function1<Num, Num> apply(final Num param)
+        public Function1<Num, Num> call(final Num param)
         {
             return new Function1<Num, Num>()
             {
                 @Override
-                public Num apply(Num num)
+                public Num call(Num num)
                 {
                     return param.mul(num);
                 }
@@ -162,45 +158,46 @@ public class Test
     @SuppressWarnings("unchecked")
     public static void main(String[] args)
     {
-        System.out.println(Arrays.toString(fibonacci.apply(10L)));
+        System.out.println(Arrays.toString(fibonacci.call(10L)));
 
-        System.out.println(pi.apply());
+        System.out.println(pi.call());
+
+        System.out.println(duplicate.call(new Num(-0.123)));
 
         Array<Num> array = new Array<>(new Num(1), new Num(2.4), new Num(3));
-        Array<Num> result = map.apply(multiplyByTwo, array);
-        System.out.println(result);
+        System.out.println(map.call(multiplyByTwo, array));
 
-        System.out.println(applyTwice.apply(new Function1<Num, Num>()
+        System.out.println(callTwice.call(new Function1<Num, Num>()
         {
             @Override
-            public Num apply(Num num)
+            public Num call(Num num)
             {
                 return num.mul(new Num(2));
             }
         }, new Num(3)));
 
-        Function1<Num, Num> multiplicator3 = multiplicator.apply(new Num(3));
-        System.out.println(multiplicator3.apply(new Num(7)));
-        System.out.println(multiplicator3.apply(new Num(8)));
+        Function1<Num, Num> multiplicator3 = multiplicator.call(new Num(3));
+        System.out.println(multiplicator3.call(new Num(7)));
+        System.out.println(multiplicator3.call(new Num(8)));
     }
 
     public interface Function0<R>
     {
-        R apply();
+        R call();
     }
 
     public interface Function1<P1, R>
     {
-        R apply(P1 p1);
+        R call(P1 p1);
     }
 
     public interface Function2<P1, P2, R>
     {
-        R apply(P1 p1, P2 p2);
+        R call(P1 p1, P2 p2);
     }
 
     public interface Function3<P1, P2, P3, R>
     {
-        R apply(P1 p1, P2 p2, P3 p3);
+        R call(P1 p1, P2 p2, P3 p3);
     }
 }
