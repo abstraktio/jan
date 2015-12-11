@@ -1,7 +1,9 @@
 package com.mauriciotogneri.jan.bytecode;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Runtime
 {
@@ -186,6 +188,38 @@ public class Runtime
             else
             {
                 throw new RuntimeException("Error creating array");
+            }
+        }
+    }
+
+    public static class ListsRuntime
+    {
+        public static <T> List<T> $concat(final List<T> list, final T element)
+        {
+            List<T> copy = $clone(list);
+            copy.add(element);
+
+            return copy;
+        }
+
+        @SuppressWarnings("unchecked")
+        public static <T, E> T $clone(final T element)
+        {
+            if (element instanceof List)
+            {
+                List<E> list = (List<E>) element;
+                List result = new ArrayList<>();
+
+                for (E current : list)
+                {
+                    result.add($clone(current));
+                }
+
+                return (T)result;
+            }
+            else
+            {
+                return element;
             }
         }
     }
