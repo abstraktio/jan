@@ -5,17 +5,17 @@ import com.mauriciotogneri.jan.bytecode.objects.Num;
 
 public class Test
 {
-    // factorial % n %
+    // factorial n % %
     // 	? = n 0 1
     // * n factorial - n 1
-    public static class factorial implements F1<F0<Num>, F0<Num>>
+    public static class factorial implements Function<Constant<Num>, Constant<Num>>
     {
         public static final factorial instance = new factorial();
 
         @Override
-        public F0<Num> call(final F0<Num> n)
+        public Constant<Num> call(final Constant<Num> n)
         {
-            return new F0<Num>()
+            return new Constant<Num>()
             {
                 @Override
                 public Num call()
@@ -26,7 +26,7 @@ public class Test
                     }
                     else
                     {
-                        return n.call().mul(factorial.instance.call(new F0<Num>()
+                        return n.call().mul(factorial.instance.call(new Constant<Num>()
                         {
                             @Override
                             public Num call()
@@ -40,38 +40,68 @@ public class Test
         }
     }
 
-    // map ( A -> B ) function [ A ] array -> [ B ]
+    // duplicate a % %
+    // * a 2
+
+    public static class duplicate implements Function<Constant<Num>, Constant<Num>>
+    {
+        public static final duplicate instance = new duplicate();
+
+        @Override
+        public Constant<Num> call(final Constant<Num> a)
+        {
+            return new Constant<Num>()
+            {
+                @Override
+                public Num call()
+                {
+                    return a.call().mul(new Num(2));
+                }
+            };
+        }
+    }
+
+    // map function ( A B ) array [ A ] [ B ]
     // ? = 0 # array [ ]
     // _ x  @ 0 array
     // _ xs - 0 array
     // + function x map function xs
 
     @SuppressWarnings("unchecked")
-    public static class map<A, B> implements Function2<F1<A, B>, Array<A>, Array<B>>
+    public static class map<A, B> implements Function<Function<A, B>, Function<Array<A>, Array<B>>>
     {
-        public static final map instance = new map();
-
         @Override
-        public Array<B> call(final F1<A, B> function, final Array<A> array)
+        public Function<Array<A>, Array<B>> call(final Function<A, B> function)
         {
-            if (array.length() == 0)
+            return new Function<Array<A>, Array<B>>()
             {
-                return new Array<>();
-            }
-            else
-            {
-                A x = array.get(0);
-                Array<A> xs = array.remove(0);
+                @Override
+                public Array<B> call(final Array<A> array)
+                {
+                    if (array.length() == 0)
+                    {
+                        return new Array<>();
+                    }
 
-                return map.instance.call(function, xs).concatenateBefore(function.call(x));
-            }
+                    A x = array.get(0);
+                    Array<A> xs = array.remove(0);
+
+                    B _1 = function.call(x);
+                    Function<Array<A>, Array<B>> _2 = new map<A, B>().call(function);
+                    Array<B> _3 = _2.call(xs);
+
+                    return _3.concatenateAfter(_1);
+
+                    //return new map<A, B>().call(function).call(xs).concatenateBefore(function.call(x));
+                }
+            };
         }
     }
 
     // pi
     // 3.13159
 
-    public static class pi implements F0<Num>
+    public static class pi implements Constant<Num>
     {
         @Override
         public Num call()
@@ -80,27 +110,27 @@ public class Test
         }
     }
 
-    // custom % a % b % c
+    // custom a % b % c % %
     // + * c b a
 
-    public static class custom implements F1<F0<Num>, F1<F0<Num>, F1<F0<Num>, F0<Num>>>>
+    public static class custom implements Function<Constant<Num>, Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>>
     {
         public static final custom instance = new custom();
 
         @Override
-        public F1<F0<Num>, F1<F0<Num>, F0<Num>>> call(final F0<Num> a)
+        public Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>> call(final Constant<Num> a)
         {
-            return new F1<F0<Num>, F1<F0<Num>, F0<Num>>>()
+            return new Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>()
             {
                 @Override
-                public F1<F0<Num>, F0<Num>> call(final F0<Num> b)
+                public Function<Constant<Num>, Constant<Num>> call(final Constant<Num> b)
                 {
-                    return new F1<F0<Num>, F0<Num>>()
+                    return new Function<Constant<Num>, Constant<Num>>()
                     {
                         @Override
-                        public F0<Num> call(final F0<Num> c)
+                        public Constant<Num> call(final Constant<Num> c)
                         {
-                            return new F0<Num>()
+                            return new Constant<Num>()
                             {
                                 @Override
                                 public Num call()
@@ -115,48 +145,76 @@ public class Test
         }
     }
 
-    // mul3 % _ %
-    // * 3
+    // multi a % b % %
+    // * a b
 
-    public static class mul3 implements F1<F0<Num>, F0<Num>>
+    public static class multi implements Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>
     {
-        public static final mul3 instance = new mul3();
+        public static final multi instance = new multi();
 
         @Override
-        public F0<Num> call(final F0<Num> _1)
+        public Function<Constant<Num>, Constant<Num>> call(final Constant<Num> a)
         {
-            return new F0<Num>()
+            return new Function<Constant<Num>, Constant<Num>>()
             {
                 @Override
-                public Num call()
+                public Constant<Num> call(final Constant<Num> b)
                 {
-                    return new Num(3).mul(_1.call());
+                    return new Constant<Num>()
+                    {
+                        @Override
+                        public Num call()
+                        {
+                            return a.call().mul(b.call());
+                        }
+                    };
                 }
             };
         }
     }
 
-    // mul3AndAdd % _ % _ %
-    // + * 3
+    // mul3 a % %
+    // * 3 a
 
-    public static class mul3AndAdd implements F1<F0<Num>, F1<F0<Num>, F0<Num>>>
+    public static class mul3 implements Function<Constant<Num>, Constant<Num>>
+    {
+        public static final mul3 instance = new mul3();
+
+        @Override
+        public Constant<Num> call(final Constant<Num> a)
+        {
+            return new Constant<Num>()
+            {
+                @Override
+                public Num call()
+                {
+                    return new Num(3).mul(a.call());
+                }
+            };
+        }
+    }
+
+    // mul3AndAdd a % b % %
+    // + * 3 a b
+
+    public static class mul3AndAdd implements Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>
     {
         public static final mul3AndAdd instance = new mul3AndAdd();
 
         @Override
-        public F1<F0<Num>, F0<Num>> call(final F0<Num> _1)
+        public Function<Constant<Num>, Constant<Num>> call(final Constant<Num> a)
         {
-            return new F1<F0<Num>, F0<Num>>()
+            return new Function<Constant<Num>, Constant<Num>>()
             {
                 @Override
-                public F0<Num> call(final F0<Num> _2)
+                public Constant<Num> call(final Constant<Num> b)
                 {
-                    return new F0<Num>()
+                    return new Constant<Num>()
                     {
                         @Override
                         public Num call()
                         {
-                            return new Num(3).mul(_1.call()).add(_2.call());
+                            return new Num(3).mul(a.call()).add(b.call());
                         }
                     };
                 }
@@ -167,7 +225,35 @@ public class Test
     @SuppressWarnings("unchecked")
     public static void main(String[] args)
     {
-        F0<Num> n = new F0<Num>()
+        Constant<Num> a1 = new Constant<Num>()
+        {
+            @Override
+            public Num call()
+            {
+                return new Num(1);
+            }
+        };
+        Constant<Num> a2 = new Constant<Num>()
+        {
+            @Override
+            public Num call()
+            {
+                return new Num(2);
+            }
+        };
+        Constant<Num> a3 = new Constant<Num>()
+        {
+            @Override
+            public Num call()
+            {
+                return new Num(3);
+            }
+        };
+
+        Array<Constant<Num>> array = new Array<>(a1, a2, a3);
+        print(new map<Constant<Num>, Constant<Num>>().call(duplicate.instance).call(array));
+
+        Constant<Num> n = new Constant<Num>()
         {
             @Override
             public Num call()
@@ -177,7 +263,7 @@ public class Test
         };
         print(factorial.instance.call(n));
 
-        F0<Num> a = new F0<Num>()
+        Constant<Num> a = new Constant<Num>()
         {
             @Override
             public Num call()
@@ -185,7 +271,7 @@ public class Test
                 return new Num(5);
             }
         };
-        F0<Num> b = new F0<Num>()
+        Constant<Num> b = new Constant<Num>()
         {
             @Override
             public Num call()
@@ -193,7 +279,7 @@ public class Test
                 return new Num(7);
             }
         };
-        F0<Num> c = new F0<Num>()
+        Constant<Num> c = new Constant<Num>()
         {
             @Override
             public Num call()
@@ -204,7 +290,7 @@ public class Test
         // custom2 5 7 2
         print(custom.instance.call(a).call(b).call(c));
 
-        F0<Num> d = new F0<Num>()
+        Constant<Num> d = new Constant<Num>()
         {
             @Override
             public Num call()
@@ -215,7 +301,7 @@ public class Test
         print(mul3.instance.call(d));
     }
 
-    private static void print(F0<?> function)
+    private static void print(Constant<?> function)
     {
         System.out.println(function.call());
     }
@@ -225,23 +311,13 @@ public class Test
         System.out.println(object);
     }
 
-    public interface F0<R>
+    public interface Constant<R>
     {
         R call();
     }
 
-    public interface F1<P1, R>
+    public interface Function<P1, R>
     {
         R call(P1 p1);
-    }
-
-    public interface Function2<P1, P2, R>
-    {
-        R call(P1 p1, P2 p2);
-    }
-
-    public interface Function3<P1, P2, P3, R>
-    {
-        R call(P1 p1, P2 p2, P3 p3);
     }
 }

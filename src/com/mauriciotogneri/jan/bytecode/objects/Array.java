@@ -1,6 +1,6 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
-import java.util.Arrays;
+import com.mauriciotogneri.jan.bytecode.Test.Constant;
 
 public class Array<T>
 {
@@ -101,6 +101,29 @@ public class Array<T>
     @Override
     public String toString()
     {
-        return Arrays.toString(data);
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+
+        for (Object object : data)
+        {
+            if (builder.length() != 1)
+            {
+                builder.append(", ");
+            }
+
+            if (object instanceof Constant)
+            {
+                Constant c = (Constant) object;
+                builder.append(c.call());
+            }
+            else
+            {
+                builder.append(object);
+            }
+        }
+
+        builder.append("]");
+
+        return builder.toString();
     }
 }
