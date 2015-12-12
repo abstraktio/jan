@@ -5,7 +5,7 @@ import com.mauriciotogneri.jan.bytecode.objects.Num;
 
 public class Test
 {
-    // factorial n % %
+    // factorial :: n % -> %
     // 	? = n 0 1
     // * n factorial - n 1
     public static class factorial implements Function<Constant<Num>, Constant<Num>>
@@ -40,32 +40,11 @@ public class Test
         }
     }
 
-    // duplicate a % %
-    // * a 2
-
-    public static class duplicate implements Function<Constant<Num>, Constant<Num>>
-    {
-        public static final duplicate instance = new duplicate();
-
-        @Override
-        public Constant<Num> call(final Constant<Num> a)
-        {
-            return new Constant<Num>()
-            {
-                @Override
-                public Num call()
-                {
-                    return a.call().mul(new Num(2));
-                }
-            };
-        }
-    }
-
-    // map function ( A B ) array [ A ] [ B ]
+    // map :: function ( A -> B ) array [ A ] -> [ B ]
     // ? = 0 # array [ ]
     // _ x  @ 0 array
     // _ xs - 0 array
-    // + function x map function xs
+    // + function x map ( function ) xs
 
     @SuppressWarnings("unchecked")
     public static class map<A, B> implements Function<Function<A, B>, Function<Array<A>, Array<B>>>
@@ -91,14 +70,52 @@ public class Test
                     Array<B> _3 = _2.call(xs);
 
                     return _3.concatenateAfter(_1);
-
-                    //return new map<A, B>().call(function).call(xs).concatenateBefore(function.call(x));
                 }
             };
         }
     }
 
-    // pi
+    // * :: a % b % -> %
+    // * a b
+
+    public static class mul implements Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>
+    {
+        public static final mul instance = new mul();
+
+        @Override
+        public Function<Constant<Num>, Constant<Num>> call(final Constant<Num> a)
+        {
+            return new Function<Constant<Num>, Constant<Num>>()
+            {
+                @Override
+                public Constant<Num> call(final Constant<Num> b)
+                {
+                    return new Constant<Num>()
+                    {
+                        @Override
+                        public Num call()
+                        {
+                            return a.call().mul(b.call());
+                        }
+                    };
+                }
+            };
+        }
+    }
+
+    // multiplyBy :: n % -> ( % -> % )
+    // * n
+
+    public static class multiplyBy implements Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>
+    {
+        @Override
+        public Function<Constant<Num>, Constant<Num>> call(final Constant<Num> n)
+        {
+            return mul.instance.call(n);
+        }
+    }
+
+    // pi -> %
     // 3.13159
 
     public static class pi implements Constant<Num>
@@ -110,7 +127,7 @@ public class Test
         }
     }
 
-    // custom a % b % c % %
+    // custom :: a % b % c % -> %
     // + * c b a
 
     public static class custom implements Function<Constant<Num>, Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>>
@@ -145,7 +162,28 @@ public class Test
         }
     }
 
-    // multi a % b % %
+    // duplicate :: a % -> %
+    // * a 2
+
+    public static class duplicate implements Function<Constant<Num>, Constant<Num>>
+    {
+        public static final duplicate instance = new duplicate();
+
+        @Override
+        public Constant<Num> call(final Constant<Num> a)
+        {
+            return mul.instance.call(a).call(new Constant<Num>()
+            {
+                @Override
+                public Num call()
+                {
+                    return new Num(2);
+                }
+            });
+        }
+    }
+
+    // multi :: a % b % -> %
     // * a b
 
     public static class multi implements Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>
@@ -160,20 +198,13 @@ public class Test
                 @Override
                 public Constant<Num> call(final Constant<Num> b)
                 {
-                    return new Constant<Num>()
-                    {
-                        @Override
-                        public Num call()
-                        {
-                            return a.call().mul(b.call());
-                        }
-                    };
+                    return mul.instance.call(a).call(b);
                 }
             };
         }
     }
 
-    // mul3 a % %
+    // mul3 :: a % -> %
     // * 3 a
 
     public static class mul3 implements Function<Constant<Num>, Constant<Num>>
@@ -194,7 +225,7 @@ public class Test
         }
     }
 
-    // mul3AndAdd a % b % %
+    // mul3AndAdd :: a % b % -> %
     // + * 3 a b
 
     public static class mul3AndAdd implements Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>
@@ -316,8 +347,8 @@ public class Test
         R call();
     }
 
-    public interface Function<P1, R>
+    public interface Function<P, R>
     {
-        R call(P1 p1);
+        R call(P p);
     }
 }
