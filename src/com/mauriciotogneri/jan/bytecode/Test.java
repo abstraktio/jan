@@ -180,6 +180,12 @@ public class Test
         {
             return Num.create(3).mul(a);
         }
+
+        @Override
+        public String toString()
+        {
+            return "mul3 :: a % -> %";
+        }
     }
 
     // mul3AndAdd :: a % b % -> %
@@ -224,6 +230,7 @@ public class Test
 
         Array<Function1<Num, Num>> listOfFunctions = Array.create((Function1<Num, Num>) mul3.instance);
         check(listOfFunctions.get(Num.create(0)).call(Num.create(4)), Num.create(12));
+        System.out.print(listOfFunctions.get(Num.create(0)).toString());
     }
 
     private static <A> void check(Constant<A> c1, Constant<A> c2)
