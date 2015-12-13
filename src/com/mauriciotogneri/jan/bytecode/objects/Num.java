@@ -2,7 +2,7 @@ package com.mauriciotogneri.jan.bytecode.objects;
 
 import com.mauriciotogneri.jan.bytecode.Test.Constant;
 
-public class Num
+public class Num implements Constant<Num>
 {
     private final boolean isDecimal;
     private final double value;
@@ -154,5 +154,11 @@ public class Num
                 return new Num(value);
             }
         };
+    }
+
+    @Override
+    public Num call()
+    {
+        return this;
     }
 }

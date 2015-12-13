@@ -28,9 +28,9 @@ public class Array<T>
         return (T) data[index];
     }
 
-    public int length()
+    public Num length()
     {
-        return data.length;
+        return Num.create(data.length);
     }
 
     public Array<T> concatenateAfter(T element)

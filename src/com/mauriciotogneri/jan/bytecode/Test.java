@@ -42,7 +42,7 @@ public class Test
                 @Override
                 public Constant<Array<B>> call(final Constant<Array<A>> array)
                 {
-                    if (array.call().length() == 0)
+                    if ($equals.instance.call(Num.asConstant(0)).call($length.instance.call(array)).call().isTrue())
                     {
                         return new Constant<Array<B>>()
                         {
@@ -54,7 +54,7 @@ public class Test
                         };
                     }
 
-                    Constant<A> x = new Constant<A>()
+                    final Constant<A> x = new Constant<A>()
                     {
                         @Override
                         public A call()
@@ -62,7 +62,7 @@ public class Test
                             return array.call().get(0);
                         }
                     };
-                    Constant<Array<A>> xs = new Constant<Array<A>>()
+                    final Constant<Array<A>> xs = new Constant<Array<A>>()
                     {
                         @Override
                         public Array<A> call()
@@ -88,35 +88,6 @@ public class Test
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public static class map2<A, B> implements Function<Function<A, B>, Function<Array<A>, Array<B>>>
-    {
-        @Override
-        public Function<Array<A>, Array<B>> call(final Function<A, B> function)
-        {
-            return new Function<Array<A>, Array<B>>()
-            {
-                @Override
-                public Array<B> call(final Array<A> array)
-                {
-                    if (array.length() == 0)
-                    {
-                        return new Array<>();
-                    }
-
-                    A x = array.get(0);
-                    Array<A> xs = array.remove(0);
-
-                    B _1 = function.call(x);
-                    Function<Array<A>, Array<B>> _2 = new map2<A, B>().call(function);
-                    Array<B> _3 = _2.call(xs);
-
-                    return _3.concatenateAfter(_1);
-                }
-            };
-        }
-    }
-
     // = :: a % b % -> ?
     // = a b
 
@@ -133,6 +104,27 @@ public class Test
                 public Constant<Bool> call(final Constant<Num> b)
                 {
                     return Bool.asConstant(a.call().equals(b.call()));
+                }
+            };
+        }
+    }
+
+    // # :: a [ A ] -> %
+    // # a
+
+    public static class $length<A> implements Function<Constant<Array<A>>, Constant<Num>>
+    {
+        public static final $length instance = new $length();
+
+        @Override
+        public Constant<Num> call(final Constant<Array<A>> a)
+        {
+            return new Constant<Num>()
+            {
+                @Override
+                public Num call()
+                {
+                    return a.call().length();
                 }
             };
         }
@@ -161,6 +153,24 @@ public class Test
                             return a.call().mul(b.call());
                         }
                     };
+                }
+            };
+        }
+    }
+
+    public static class $mul2 implements Function<Num, Function<Num, Num>>
+    {
+        public static final $mul2 instance = new $mul2();
+
+        @Override
+        public Function<Num, Num> call(final Num a)
+        {
+            return new Function<Num, Num>()
+            {
+                @Override
+                public Num call(final Num b)
+                {
+                    return a.call().mul(b.call());
                 }
             };
         }
@@ -288,6 +298,17 @@ public class Test
         }
     }
 
+    public static class duplicate2 implements Function<Num, Num>
+    {
+        public static final duplicate2 instance = new duplicate2();
+
+        @Override
+        public Num call(final Num a)
+        {
+            return $mul2.instance.call(a).call(Num.create(2));
+        }
+    }
+
     // multi :: a % b % -> %
     // * a b
 
@@ -361,6 +382,8 @@ public class Test
     @SuppressWarnings("unchecked")
     public static void main(String[] args)
     {
+        print(duplicate2.instance.call(Num.create(23)));
+
         Constant<Num> n = Num.asConstant(5);
         print(factorial.instance.call(n));
 
@@ -377,7 +400,6 @@ public class Test
         Constant<Num> a = Num.asConstant(5);
         Constant<Num> b = Num.asConstant(7);
         Constant<Num> c = Num.asConstant(2);
-        // custom2 5 7 2
         print(custom.instance.call(a).call(b).call(c));
 
         Constant<Num> d = Num.asConstant(7);
