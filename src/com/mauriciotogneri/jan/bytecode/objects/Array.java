@@ -2,6 +2,8 @@ package com.mauriciotogneri.jan.bytecode.objects;
 
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 
+import java.util.Arrays;
+
 public class Array<T> implements Constant<Array<T>>
 {
     private final Object[] data;
@@ -65,7 +67,7 @@ public class Array<T> implements Constant<Array<T>>
         Array<T> result = new Array<>(data.length - 1);
 
         int position = 0;
-        int indexValue = (int)index.get();
+        int indexValue = (int) index.get();
 
         for (int i = 0; i < data.length; i++)
         {
@@ -102,18 +104,53 @@ public class Array<T> implements Constant<Array<T>>
     @Override
     public Bool isEqual(Constant<Array<T>> object)
     {
-        return Bool.create(isEquivalent(object));
+        return Bool.create(object.call().equals(this));
     }
 
     @Override
     public Bool isNotEqual(Constant<Array<T>> object)
     {
-        return Bool.create(!isEquivalent(object));
+        return Bool.create(!object.call().equals(this));
     }
 
-    private boolean isEquivalent(Constant<Array<T>> object)
+    @Override
+    @SuppressWarnings("unchecked")
+    public boolean equals(Object o)
     {
-        return false; // TODO
+        if (this == o)
+        {
+            return true;
+        }
+        else if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+
+        Array<T> array = (Array<T>) o;
+
+        if (array.data.length == this.data.length)
+        {
+            for (int i = 0; i < data.length; i++)
+            {
+                T e1 = (T) data[i];
+                T e2 = (T) array.data[i];
+
+                if (!e1.equals(e2))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Arrays.hashCode(data);
     }
 
     @Override

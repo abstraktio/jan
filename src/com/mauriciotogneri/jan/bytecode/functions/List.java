@@ -67,8 +67,8 @@ public class List
         }
     }
 
-    // + :: a A b [ A ] -> [ A ]
-    // + a b
+    // +> :: a A b [ A ] -> [ A ]
+    // +> a b
 
     public static class $addBefore<A> implements Function2<A, Array<A>, Array<A>>
     {
@@ -88,8 +88,8 @@ public class List
         }
     }
 
-    // + :: a A b [ A ] -> [ A ]
-    // + a b
+    // >+ :: a A b [ A ] -> [ A ]
+    // >+ a b
 
     public static class $addAfter<A> implements Function2<A, Array<A>, Array<A>>
     {

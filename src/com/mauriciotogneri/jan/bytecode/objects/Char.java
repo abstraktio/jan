@@ -20,43 +20,38 @@ public class Char implements Constant<Char>
     @Override
     public Bool isEqual(Constant<Char> object)
     {
-        return Bool.create(isEquivalent(object));
+        return Bool.create(object.call().equals(this));
     }
 
     @Override
     public Bool isNotEqual(Constant<Char> object)
     {
-        return Bool.create(!isEquivalent(object));
+        return Bool.create(!object.call().equals(this));
     }
 
-    private boolean isEquivalent(Constant<Char> object)
+    @Override
+    public boolean equals(Object o)
     {
-        return (object.call().value == this.value);
+        if (this == o)
+        {
+            return true;
+        }
+        else if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+
+        Char aChar = (Char) o;
+
+        return (value == aChar.value);
+
     }
 
-    //    @Override
-    //    public boolean equals(Object o)
-    //    {
-    //        if (this == o)
-    //        {
-    //            return true;
-    //        }
-    //        else if (o == null || getClass() != o.getClass())
-    //        {
-    //            return false;
-    //        }
-    //
-    //        Char aChar = (Char) o;
-    //
-    //        return value == aChar.value;
-    //
-    //    }
-    //
-    //    @Override
-    //    public int hashCode()
-    //    {
-    //        return (int) value;
-    //    }
+    @Override
+    public int hashCode()
+    {
+        return (int) value;
+    }
 
     public static Char create(char value)
     {

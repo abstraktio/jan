@@ -6,6 +6,9 @@ public class Bool implements Constant<Bool>
 {
     private final boolean value;
 
+    public static final Bool TRUE = new Bool(true);
+    public static final Bool FALSE = new Bool(false);
+
     protected Bool(boolean value)
     {
         this.value = value;
@@ -40,47 +43,42 @@ public class Bool implements Constant<Bool>
     @Override
     public Bool isEqual(Constant<Bool> object)
     {
-        return Bool.create(isEquivalent(object));
+        return Bool.create(object.call().equals(this));
     }
 
     @Override
     public Bool isNotEqual(Constant<Bool> object)
     {
-        return Bool.create(!isEquivalent(object));
+        return Bool.create(!object.call().equals(this));
     }
 
-    private boolean isEquivalent(Constant<Bool> object)
+    @Override
+    public boolean equals(Object o)
     {
-        return (object.call().value == this.value);
+        if (this == o)
+        {
+            return true;
+        }
+        else if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+
+        Bool bool = (Bool) o;
+
+        return (value == bool.value);
+
     }
 
-    //    @Override
-    //    public boolean equals(Object o)
-    //    {
-    //        if (this == o)
-    //        {
-    //            return true;
-    //        }
-    //        else if (o == null || getClass() != o.getClass())
-    //        {
-    //            return false;
-    //        }
-    //
-    //        Bool bool = (Bool) o;
-    //
-    //        return value == bool.value;
-    //
-    //    }
-    //
-    //    @Override
-    //    public int hashCode()
-    //    {
-    //        return (value ? 1 : 0);
-    //    }
+    @Override
+    public int hashCode()
+    {
+        return (value ? 1 : 0);
+    }
 
     public static Bool create(boolean value)
     {
-        return new Bool(value);
+        return (value) ? TRUE : FALSE;
     }
 
     @Override

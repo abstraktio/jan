@@ -190,30 +190,30 @@ public class Test
     @SuppressWarnings("unchecked")
     public static void main(String[] args)
     {
-        print(duplicate.instance.call(Num.create(23)));
+        check(duplicate.instance.call(Num.create(23)), Num.create(46));
 
-        Num n = Num.create(5);
-        print(factorial.instance.call(n));
+        check(factorial.instance.call(Num.create(5)), Num.create(120));
 
-        Array<Num> array = new Array<>(Num.create(1), Num.create(2), Num.create(3));
-        print(new map<Num, Num>().call(duplicate.instance).call(array));
+        Array<Num> input = new Array<>(Num.create(1), Num.create(2), Num.create(3));
+        Array<Num> output = new Array<>(Num.create(2), Num.create(4), Num.create(6));
+        check(new map<Num, Num>().call(duplicate.instance).call(input), output);
 
         Num a = Num.create(5);
         Num b = Num.create(7);
         Num c = Num.create(2);
-        print(custom.instance.call(a).call(b).call(c));
+        check(custom.instance.call(a).call(b).call(c), Num.create(19));
 
         Num d = Num.create(7);
-        print(mul3.instance.call(d));
+        check(mul3.instance.call(d), Num.create(21));
     }
 
-    private static void print(Constant<?> function)
+    private static void print(Constant<?> constant)
     {
-        System.out.println(function.call());
+        System.out.println(constant.call());
     }
 
-    private static void print(Object object)
+    private static <A> void check(Constant<A> c1, Constant<A> c2)
     {
-        System.out.println(object);
+        System.out.println(c1.isEqual(c2).isTrue());
     }
 }

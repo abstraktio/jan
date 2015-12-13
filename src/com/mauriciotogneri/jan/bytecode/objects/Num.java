@@ -103,46 +103,41 @@ public class Num implements Constant<Num>
     @Override
     public Bool isEqual(Constant<Num> object)
     {
-        return Bool.create(isEquivalent(object));
+        return Bool.create(object.call().equals(this));
     }
 
     @Override
     public Bool isNotEqual(Constant<Num> object)
     {
-        return Bool.create(!isEquivalent(object));
+        return Bool.create(!object.call().equals(this));
     }
 
-    private boolean isEquivalent(Constant<Num> object)
+    @Override
+    public boolean equals(Object o)
     {
-        return (Double.compare(object.call().value, this.value) == 0);
+        if (this == o)
+        {
+            return true;
+        }
+        else if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+
+        Num num = (Num) o;
+
+        return (Double.compare(num.value, value) == 0);
     }
 
-    //    @Override
-    //    public boolean equals(Object o)
-    //    {
-    //        if (this == o)
-    //        {
-    //            return true;
-    //        }
-    //        else if (o == null || getClass() != o.getClass())
-    //        {
-    //            return false;
-    //        }
-    //
-    //        Num num = (Num) o;
-    //
-    //        return Double.compare(num.value, value) == 0;
-    //    }
-    //
-    //    @Override
-    //    public int hashCode()
-    //    {
-    //        int result = (isDecimal ? 1 : 0);
-    //        long temp = Double.doubleToLongBits(value);
-    //        result = 31 * result + (int) (temp ^ (temp >>> 32));
-    //
-    //        return result;
-    //    }
+    @Override
+    public int hashCode()
+    {
+        int result = (isDecimal ? 1 : 0);
+        long temp = Double.doubleToLongBits(value);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+
+        return result;
+    }
 
     public static Num create(long value)
     {
