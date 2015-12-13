@@ -1,6 +1,6 @@
 package com.mauriciotogneri.jan.bytecode.functions;
 
-import com.mauriciotogneri.jan.bytecode.kernel.Function;
+import com.mauriciotogneri.jan.bytecode.kernel.Function1;
 import com.mauriciotogneri.jan.bytecode.kernel.Function2;
 import com.mauriciotogneri.jan.bytecode.objects.Num;
 
@@ -18,9 +18,9 @@ public class Arithmetic
         public static final $add instance = new $add();
 
         @Override
-        public Function<Num, Num> call(final Num a)
+        public Function1<Num, Num> call(final Num a)
         {
-            return new Function<Num, Num>()
+            return new Function1<Num, Num>()
             {
                 @Override
                 public Num call(final Num b)
@@ -39,9 +39,9 @@ public class Arithmetic
         public static final $sub instance = new $sub();
 
         @Override
-        public Function<Num, Num> call(final Num a)
+        public Function1<Num, Num> call(final Num a)
         {
-            return new Function<Num, Num>()
+            return new Function1<Num, Num>()
             {
                 @Override
                 public Num call(final Num b)
@@ -60,9 +60,9 @@ public class Arithmetic
         public static final $mul instance = new $mul();
 
         @Override
-        public Function<Num, Num> call(final Num a)
+        public Function1<Num, Num> call(final Num a)
         {
-            return new Function<Num, Num>()
+            return new Function1<Num, Num>()
             {
                 @Override
                 public Num call(final Num b)
@@ -81,9 +81,9 @@ public class Arithmetic
         public static final $div instance = new $div();
 
         @Override
-        public Function<Num, Num> call(final Num a)
+        public Function1<Num, Num> call(final Num a)
         {
-            return new Function<Num, Num>()
+            return new Function1<Num, Num>()
             {
                 @Override
                 public Num call(final Num b)
@@ -97,7 +97,7 @@ public class Arithmetic
     // ++ :: a % -> %
     // ++ a
 
-    public static class $inc implements Function<Num, Num>
+    public static class $inc implements Function1<Num, Num>
     {
         public static final $inc instance = new $inc();
 
@@ -111,7 +111,7 @@ public class Arithmetic
     // -- :: a % -> %
     // -- a
 
-    public static class $dec implements Function<Num, Num>
+    public static class $dec implements Function1<Num, Num>
     {
         public static final $dec instance = new $dec();
 
@@ -130,9 +130,9 @@ public class Arithmetic
         public static final $pow instance = new $pow();
 
         @Override
-        public Function<Num, Num> call(final Num a)
+        public Function1<Num, Num> call(final Num a)
         {
-            return new Function<Num, Num>()
+            return new Function1<Num, Num>()
             {
                 @Override
                 public Num call(final Num b)
@@ -151,9 +151,9 @@ public class Arithmetic
         public static final $mod instance = new $mod();
 
         @Override
-        public Function<Num, Num> call(final Num a)
+        public Function1<Num, Num> call(final Num a)
         {
-            return new Function<Num, Num>()
+            return new Function1<Num, Num>()
             {
                 @Override
                 public Num call(final Num b)

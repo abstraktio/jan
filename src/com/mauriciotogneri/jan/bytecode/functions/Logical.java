@@ -1,6 +1,6 @@
 package com.mauriciotogneri.jan.bytecode.functions;
 
-import com.mauriciotogneri.jan.bytecode.kernel.Function;
+import com.mauriciotogneri.jan.bytecode.kernel.Function1;
 import com.mauriciotogneri.jan.bytecode.kernel.Function2;
 import com.mauriciotogneri.jan.bytecode.objects.Bool;
 
@@ -18,9 +18,9 @@ public class Logical
         public static final $and instance = new $and();
 
         @Override
-        public Function<Bool, Bool> call(final Bool a)
+        public Function1<Bool, Bool> call(final Bool a)
         {
-            return new Function<Bool, Bool>()
+            return new Function1<Bool, Bool>()
             {
                 @Override
                 public Bool call(final Bool b)
@@ -39,9 +39,9 @@ public class Logical
         public static final $or instance = new $or();
 
         @Override
-        public Function<Bool, Bool> call(final Bool a)
+        public Function1<Bool, Bool> call(final Bool a)
         {
-            return new Function<Bool, Bool>()
+            return new Function1<Bool, Bool>()
             {
                 @Override
                 public Bool call(final Bool b)
@@ -55,7 +55,7 @@ public class Logical
     // ! :: a ? -> ?
     // ! a
 
-    public static class $neg implements Function<Bool, Bool>
+    public static class $neg implements Function1<Bool, Bool>
     {
         public static final $neg instance = new $neg();
 

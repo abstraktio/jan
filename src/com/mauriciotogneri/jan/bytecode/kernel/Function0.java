@@ -1,6 +1,6 @@
 package com.mauriciotogneri.jan.bytecode.kernel;
 
-public interface Function<A, Z>
+public interface Function0<Z>
 {
-    Z call(A a);
+    Z call();
 }

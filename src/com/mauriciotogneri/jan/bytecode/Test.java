@@ -1,13 +1,15 @@
 package com.mauriciotogneri.jan.bytecode;
 
 import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$add;
+import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$div;
 import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$mul;
 import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$sub;
 import com.mauriciotogneri.jan.bytecode.functions.Comparison.$equals;
 import com.mauriciotogneri.jan.bytecode.functions.List.$addBefore;
 import com.mauriciotogneri.jan.bytecode.functions.List.$length;
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
-import com.mauriciotogneri.jan.bytecode.kernel.Function;
+import com.mauriciotogneri.jan.bytecode.kernel.Function0;
+import com.mauriciotogneri.jan.bytecode.kernel.Function1;
 import com.mauriciotogneri.jan.bytecode.kernel.Function2;
 import com.mauriciotogneri.jan.bytecode.kernel.Function3;
 import com.mauriciotogneri.jan.bytecode.objects.Array;
@@ -19,7 +21,7 @@ public class Test
     // ? = n 0 1
     // * n factorial - n 1
 
-    public static class factorial implements Function<Num, Num>
+    public static class factorial implements Function1<Num, Num>
     {
         public static final factorial instance = new factorial();
 
@@ -35,19 +37,19 @@ public class Test
         }
     }
 
-    // map :: function ( A -> B ) array [ A ] -> [ B ]
+    // map :: function ( $A -> $B ) array [ $A ] -> [ $B ]
     // ? = 0 # array [ ]
     // _ x  @ 0 array
     // _ xs - 0 array
     // + function x map ( function ) xs
 
     @SuppressWarnings("unchecked")
-    public static class map<A, B> implements Function2<Function<A, B>, Array<A>, Array<B>>
+    public static class map<A, B> implements Function2<Function1<A, B>, Array<A>, Array<B>>
     {
         @Override
-        public Function<Array<A>, Array<B>> call(final Function<A, B> function)
+        public Function1<Array<A>, Array<B>> call(final Function1<A, B> function)
         {
-            return new Function<Array<A>, Array<B>>()
+            return new Function1<Array<A>, Array<B>>()
             {
                 @Override
                 public Array<B> call(final Array<A> array)
@@ -72,7 +74,7 @@ public class Test
     public static class multiplyBy implements Function2<Num, Num, Num>
     {
         @Override
-        public Function<Num, Num> call(final Num n)
+        public Function1<Num, Num> call(final Num n)
         {
             return $mul.instance.call(n);
         }
@@ -81,11 +83,12 @@ public class Test
     // pi -> %
     // 3.13159
 
-    public static class pi extends Num
+    public static class pi implements Function0<Num>
     {
-        private pi()
+        @Override
+        public Num call()
         {
-            super(3.14159);
+            return Num.create(3.14159);
         }
     }
 
@@ -102,9 +105,9 @@ public class Test
             return new Function2<Num, Num, Num>()
             {
                 @Override
-                public Function<Num, Num> call(final Num b)
+                public Function1<Num, Num> call(final Num b)
                 {
-                    return new Function<Num, Num>()
+                    return new Function1<Num, Num>()
                     {
                         @Override
                         public Num call(final Num c)
@@ -117,10 +120,24 @@ public class Test
         }
     }
 
+    // half :: -> ( % -> % )
+    // / 2
+
+    public static class half implements Function0<Function1<Num, Num>>
+    {
+        public static final half instance = new half();
+
+        @Override
+        public Function1<Num, Num> call()
+        {
+            return $div.instance.call(Num.create(2));
+        }
+    }
+
     // duplicate :: a % -> %
     // * a 2
 
-    public static class duplicate implements Function<Num, Num>
+    public static class duplicate implements Function1<Num, Num>
     {
         public static final duplicate instance = new duplicate();
 
@@ -139,9 +156,9 @@ public class Test
         public static final multi instance = new multi();
 
         @Override
-        public Function<Num, Num> call(final Num a)
+        public Function1<Num, Num> call(final Num a)
         {
-            return new Function<Num, Num>()
+            return new Function1<Num, Num>()
             {
                 @Override
                 public Num call(final Num b)
@@ -155,7 +172,7 @@ public class Test
     // mul3 :: a % -> %
     // * 3 a
 
-    public static class mul3 implements Function<Num, Num>
+    public static class mul3 implements Function1<Num, Num>
     {
         public static final mul3 instance = new mul3();
 
@@ -174,9 +191,9 @@ public class Test
         public static final mul3AndAdd instance = new mul3AndAdd();
 
         @Override
-        public Function<Num, Num> call(final Num a)
+        public Function1<Num, Num> call(final Num a)
         {
-            return new Function<Num, Num>()
+            return new Function1<Num, Num>()
             {
                 @Override
                 public Num call(final Num b)
@@ -207,13 +224,8 @@ public class Test
         check(mul3.instance.call(d), Num.create(21));
     }
 
-    private static void print(Constant<?> constant)
-    {
-        System.out.println(constant.call());
-    }
-
     private static <A> void check(Constant<A> c1, Constant<A> c2)
     {
-        System.out.println(c1.isEqual(c2).isTrue());
+        System.out.println(c1.isEqual(c2).isTrue() + "   " + c1.call());
     }
 }

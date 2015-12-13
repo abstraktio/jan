@@ -1,7 +1,7 @@
 package com.mauriciotogneri.jan.bytecode.functions;
 
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
-import com.mauriciotogneri.jan.bytecode.kernel.Function;
+import com.mauriciotogneri.jan.bytecode.kernel.Function1;
 import com.mauriciotogneri.jan.bytecode.kernel.Function2;
 import com.mauriciotogneri.jan.bytecode.objects.Bool;
 import com.mauriciotogneri.jan.bytecode.objects.Char;
@@ -13,7 +13,7 @@ public class Comparison
     {
     }
 
-    // = :: a A b A -> ?
+    // = :: a $A b $A -> ?
     // = a b
 
     public static class $equals<A> implements Function2<Constant<A>, Constant<A>, Bool>
@@ -23,9 +23,9 @@ public class Comparison
         public static final $equals<Char> $equalsChar = new $equals<>();
 
         @Override
-        public Function<Constant<A>, Bool> call(final Constant<A> a)
+        public Function1<Constant<A>, Bool> call(final Constant<A> a)
         {
-            return new Function<Constant<A>, Bool>()
+            return new Function1<Constant<A>, Bool>()
             {
                 @Override
                 public Bool call(final Constant<A> b)
@@ -36,7 +36,7 @@ public class Comparison
         }
     }
 
-    // != :: a A b A -> ?
+    // != :: a $A b $A -> ?
     // != a b
 
     public static class $notEquals<A> implements Function2<Constant<A>, Constant<A>, Bool>
@@ -46,9 +46,9 @@ public class Comparison
         public static final $notEquals<Char> $notEqualsChar = new $notEquals<>();
 
         @Override
-        public Function<Constant<A>, Bool> call(final Constant<A> a)
+        public Function1<Constant<A>, Bool> call(final Constant<A> a)
         {
-            return new Function<Constant<A>, Bool>()
+            return new Function1<Constant<A>, Bool>()
             {
                 @Override
                 public Bool call(final Constant<A> b)
@@ -67,9 +67,9 @@ public class Comparison
         public static final $less instance = new $less();
 
         @Override
-        public Function<Num, Bool> call(final Num a)
+        public Function1<Num, Bool> call(final Num a)
         {
-            return new Function<Num, Bool>()
+            return new Function1<Num, Bool>()
             {
                 @Override
                 public Bool call(final Num b)
@@ -88,9 +88,9 @@ public class Comparison
         public static final $lessOrEqual instance = new $lessOrEqual();
 
         @Override
-        public Function<Num, Bool> call(final Num a)
+        public Function1<Num, Bool> call(final Num a)
         {
-            return new Function<Num, Bool>()
+            return new Function1<Num, Bool>()
             {
                 @Override
                 public Bool call(final Num b)
@@ -109,9 +109,9 @@ public class Comparison
         public static final $greater instance = new $greater();
 
         @Override
-        public Function<Num, Bool> call(final Num a)
+        public Function1<Num, Bool> call(final Num a)
         {
-            return new Function<Num, Bool>()
+            return new Function1<Num, Bool>()
             {
                 @Override
                 public Bool call(final Num b)
@@ -130,9 +130,9 @@ public class Comparison
         public static final $greaterOrEqual instance = new $greaterOrEqual();
 
         @Override
-        public Function<Num, Bool> call(final Num a)
+        public Function1<Num, Bool> call(final Num a)
         {
-            return new Function<Num, Bool>()
+            return new Function1<Num, Bool>()
             {
                 @Override
                 public Bool call(final Num b)
