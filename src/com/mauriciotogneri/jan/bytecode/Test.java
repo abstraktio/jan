@@ -9,6 +9,7 @@ public class Test
     // factorial :: n % -> %
     // ? = n 0 1
     // * n factorial - n 1
+
     public static class factorial implements Function<Num, Num>
     {
         public static final factorial instance = new factorial();
@@ -16,7 +17,7 @@ public class Test
         @Override
         public Num call(final Num n)
         {
-            if ($equals.instance.call(n).call(Num.create(0)).call().isTrue())
+            if ($equals.instance.call(n).call(Num.create(0)).isTrue())
             {
                 return Num.create(1);
             }
@@ -42,40 +43,36 @@ public class Test
                 @Override
                 public Array<B> call(final Array<A> array)
                 {
-                    if ($equals.instance.call(Num.create(0)).call($length.instance.call(array)).call().isTrue())
+                    if ($equals.instance.call(Num.create(0)).call($length.instance.call(array)).isTrue())
                     {
                         return new Array<>();
                     }
 
-                    final A x = array.call().get(0);
-                    final Array<A> xs = array.call().remove(0);
+                    A x = array.get(0);
+                    Array<A> xs = array.remove(0);
 
-                    final B _1 = function.call(x);
-                    final Function<Array<A>, Array<B>> _2 = new map<A, B>().call(function);
-                    final Array<B> _3 = _2.call(xs);
-
-                    return _3.call().concatenateBefore(_1);
+                    return new $concatenateBefore<B>().call(function.call(x)).call(new map<A, B>().call(function).call(xs));
                 }
             };
         }
     }
 
-    // = :: a % b % -> ?
+    // = :: a A b A -> ?
     // = a b
 
-    public static class $equals implements Function<Num, Function<Num, Bool>>
+    public static class $equals implements Function<Constant, Function<Constant, Bool>>
     {
         public static final $equals instance = new $equals();
 
         @Override
-        public Function<Num, Bool> call(final Num a)
+        public Function<Constant, Bool> call(final Constant a)
         {
-            return new Function<Num, Bool>()
+            return new Function<Constant, Bool>()
             {
                 @Override
-                public Bool call(final Num b)
+                public Bool call(final Constant b)
                 {
-                    return Bool.create(a.call().equals(b.call()));
+                    return Bool.create(a.equals(b));
                 }
             };
         }
@@ -91,7 +88,7 @@ public class Test
         @Override
         public Num call(final Array<A> a)
         {
-            return a.call().length();
+            return a.length();
         }
     }
 
@@ -110,7 +107,7 @@ public class Test
                 @Override
                 public Num call(final Num b)
                 {
-                    return a.call().mul(b.call());
+                    return a.mul(b);
                 }
             };
         }
@@ -131,7 +128,7 @@ public class Test
                 @Override
                 public Num call(final Num b)
                 {
-                    return a.call().add(b.call());
+                    return a.add(b);
                 }
             };
         }
@@ -153,6 +150,27 @@ public class Test
                 public Num call(final Num b)
                 {
                     return a.sub(b);
+                }
+            };
+        }
+    }
+
+    // + :: a A b [ A ] -> [ A ]
+    // + a b
+
+    public static class $concatenateBefore<A> implements Function<A, Function<Array<A>, Array<A>>>
+    {
+        public static final $concatenateBefore instance = new $concatenateBefore();
+
+        @Override
+        public Function<Array<A>, Array<A>> call(final A a)
+        {
+            return new Function<Array<A>, Array<A>>()
+            {
+                @Override
+                public Array<A> call(final Array<A> b)
+                {
+                    return b.concatenateBefore(a);
                 }
             };
         }
@@ -255,7 +273,7 @@ public class Test
         @Override
         public Num call(final Num a)
         {
-            return Num.create(3).mul(a.call());
+            return Num.create(3).mul(a);
         }
     }
 
@@ -274,7 +292,7 @@ public class Test
                 @Override
                 public Num call(final Num b)
                 {
-                    return Num.create(3).mul(a.call()).add(b.call());
+                    return Num.create(3).mul(a).add(b);
                 }
             };
         }
@@ -288,14 +306,7 @@ public class Test
         Num n = Num.create(5);
         print(factorial.instance.call(n));
 
-        Array<Num> array = new Array<Num>()
-        {
-            @Override
-            public Array<Num> call()
-            {
-                return new Array<>(Num.create(1), Num.create(2), Num.create(3));
-            }
-        };
+        Array<Num> array = new Array<>(Num.create(1), Num.create(2), Num.create(3));
         print(new map<Num, Num>().call(duplicate.instance).call(array));
 
         Num a = Num.create(5);
