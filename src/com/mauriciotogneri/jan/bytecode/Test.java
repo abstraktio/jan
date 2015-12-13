@@ -33,7 +33,7 @@ public class Test
     // + function x map ( function ) xs
 
     @SuppressWarnings("unchecked")
-    public static class map<A, B> implements Function<Function<A, B>, Function<Array<A>, Array<B>>>
+    public static class map<A, B> implements Function2<Function<A, B>, Array<A>, Array<B>>
     {
         @Override
         public Function<Array<A>, Array<B>> call(final Function<A, B> function)
@@ -60,7 +60,7 @@ public class Test
     // = :: a A b A -> ?
     // = a b
 
-    public static class $equals implements Function<Constant, Function<Constant, Bool>>
+    public static class $equals implements Function2<Constant, Constant, Bool>
     {
         public static final $equals instance = new $equals();
 
@@ -95,7 +95,7 @@ public class Test
     // * :: a % b % -> %
     // * a b
 
-    public static class $mul implements Function<Num, Function<Num, Num>>
+    public static class $mul implements Function2<Num, Num, Num>
     {
         public static final $mul instance = new $mul();
 
@@ -116,7 +116,7 @@ public class Test
     // + :: a % b % -> %
     // + a b
 
-    public static class $add implements Function<Num, Function<Num, Num>>
+    public static class $add implements Function2<Num, Num, Num>
     {
         public static final $add instance = new $add();
 
@@ -137,7 +137,7 @@ public class Test
     // - :: a % b % -> %
     // - a b
 
-    public static class $sub implements Function<Num, Function<Num, Num>>
+    public static class $sub implements Function2<Num, Num, Num>
     {
         public static final $sub instance = new $sub();
 
@@ -158,7 +158,7 @@ public class Test
     // + :: a A b [ A ] -> [ A ]
     // + a b
 
-    public static class $concatenateBefore<A> implements Function<A, Function<Array<A>, Array<A>>>
+    public static class $concatenateBefore<A> implements Function2<A, Array<A>, Array<A>>
     {
         public static final $concatenateBefore instance = new $concatenateBefore();
 
@@ -179,7 +179,7 @@ public class Test
     // multiplyBy :: n % -> ( % -> % )
     // * n
 
-    public static class multiplyBy implements Function<Num, Function<Num, Num>>
+    public static class multiplyBy implements Function2<Num, Num, Num>
     {
         @Override
         public Function<Num, Num> call(final Num n)
@@ -203,14 +203,14 @@ public class Test
     // custom :: a % b % c % -> %
     // + * c b a
 
-    public static class custom implements Function<Num, Function<Num, Function<Num, Num>>>
+    public static class custom implements Function3<Num, Num, Num, Num>
     {
         public static final custom instance = new custom();
 
         @Override
-        public Function<Num, Function<Num, Num>> call(final Num a)
+        public Function2<Num, Num, Num> call(final Num a)
         {
-            return new Function<Num, Function<Num, Num>>()
+            return new Function2<Num, Num, Num>()
             {
                 @Override
                 public Function<Num, Num> call(final Num b)
@@ -245,7 +245,7 @@ public class Test
     // multi :: a % b % -> %
     // * a b
 
-    public static class multi implements Function<Num, Function<Num, Num>>
+    public static class multi implements Function2<Num, Num, Num>
     {
         public static final multi instance = new multi();
 
@@ -280,7 +280,7 @@ public class Test
     // mul3AndAdd :: a % b % -> %
     // + * 3 a b
 
-    public static class mul3AndAdd implements Function<Num, Function<Num, Num>>
+    public static class mul3AndAdd implements Function2<Num, Num, Num>
     {
         public static final mul3AndAdd instance = new mul3AndAdd();
 
@@ -333,8 +333,16 @@ public class Test
         R call();
     }
 
-    public interface Function<P, R>
+    public interface Function<A, Z>
     {
-        R call(P p);
+        Z call(A a);
+    }
+
+    public interface Function2<A, B, Z> extends Function<A, Function<B, Z>>
+    {
+    }
+
+    public interface Function3<A, B, C, Z> extends Function2<A, B, Function<C, Z>>
+    {
     }
 }
