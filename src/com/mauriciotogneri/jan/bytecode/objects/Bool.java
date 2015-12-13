@@ -1,5 +1,7 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
+import com.mauriciotogneri.jan.bytecode.Test.Constant;
+
 public class Bool
 {
     private final boolean value;
@@ -22,6 +24,11 @@ public class Bool
     public Bool or(Bool bool)
     {
         return new Bool(this.value || bool.value);
+    }
+
+    public boolean isTrue()
+    {
+        return value;
     }
 
     @Override
@@ -52,5 +59,22 @@ public class Bool
     public int hashCode()
     {
         return (value ? 1 : 0);
+    }
+
+    public static Bool create(boolean value)
+    {
+        return new Bool(value);
+    }
+
+    public static Constant<Bool> asConstant(final boolean value)
+    {
+        return new Constant<Bool>()
+        {
+            @Override
+            public Bool call()
+            {
+                return new Bool(value);
+            }
+        };
     }
 }

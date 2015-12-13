@@ -1,17 +1,19 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
+import com.mauriciotogneri.jan.bytecode.Test.Constant;
+
 public class Num
 {
     private final boolean isDecimal;
     private final double value;
 
-    public Num(long value)
+    private Num(long value)
     {
         this.isDecimal = false;
         this.value = value;
     }
 
-    public Num(double value)
+    private Num(double value)
     {
         this.isDecimal = true;
         this.value = value;
@@ -118,5 +120,39 @@ public class Num
         result = 31 * result + (int) (temp ^ (temp >>> 32));
 
         return result;
+    }
+
+    public static Num create(long value)
+    {
+        return new Num(value);
+    }
+
+    public static Num create(double value)
+    {
+        return new Num(value);
+    }
+
+    public static Constant<Num> asConstant(final long value)
+    {
+        return new Constant<Num>()
+        {
+            @Override
+            public Num call()
+            {
+                return new Num(value);
+            }
+        };
+    }
+
+    public static Constant<Num> asConstant(final double value)
+    {
+        return new Constant<Num>()
+        {
+            @Override
+            public Num call()
+            {
+                return new Num(value);
+            }
+        };
     }
 }

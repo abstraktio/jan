@@ -1,10 +1,12 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
+import com.mauriciotogneri.jan.bytecode.Test.Constant;
+
 public class Char
 {
     private final char value;
 
-    public Char(char value)
+    private Char(char value)
     {
         this.value = value;
     }
@@ -37,5 +39,22 @@ public class Char
     public int hashCode()
     {
         return (int) value;
+    }
+
+    public static Char create(char value)
+    {
+        return new Char(value);
+    }
+
+    public static Constant<Char> asConstant(final char value)
+    {
+        return new Constant<Char>()
+        {
+            @Override
+            public Char call()
+            {
+                return new Char(value);
+            }
+        };
     }
 }
