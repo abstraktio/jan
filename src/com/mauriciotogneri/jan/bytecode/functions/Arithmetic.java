@@ -94,6 +94,27 @@ public class Arithmetic
         }
     }
 
+    // /% :: a % b % -> %
+    // /% a b
+
+    public static class $divf implements Function2<Num, Num, Num>
+    {
+        public static final $divf instance = new $divf();
+
+        @Override
+        public Function1<Num, Num> call(final Num a)
+        {
+            return new Function1<Num, Num>()
+            {
+                @Override
+                public Num call(final Num b)
+                {
+                    return a.divf(b);
+                }
+            };
+        }
+    }
+
     // ++ :: a % -> %
     // ++ a
 

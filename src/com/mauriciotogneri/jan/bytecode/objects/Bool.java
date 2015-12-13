@@ -9,24 +9,24 @@ public class Bool implements Constant<Bool>
     public static final Bool TRUE = new Bool(true);
     public static final Bool FALSE = new Bool(false);
 
-    protected Bool(boolean value)
+    private Bool(boolean value)
     {
         this.value = value;
     }
 
     public Bool and(Bool bool)
     {
-        return new Bool(this.value && bool.value);
+        return Bool.create(this.value && bool.value);
     }
 
     public Bool or(Bool bool)
     {
-        return new Bool(this.value || bool.value);
+        return Bool.create(this.value || bool.value);
     }
 
     public Bool neg()
     {
-        return new Bool(!value);
+        return Bool.create(!value);
     }
 
     public boolean isTrue()

@@ -7,13 +7,13 @@ public class Num implements Constant<Num>
     private final boolean isDecimal;
     private final double value;
 
-    protected Num(long value)
+    private Num(long value)
     {
         this.isDecimal = false;
         this.value = value;
     }
 
-    protected Num(double value)
+    private Num(double value)
     {
         this.isDecimal = true;
         this.value = value;
@@ -21,7 +21,7 @@ public class Num implements Constant<Num>
 
     private Num get(double value, boolean decimal)
     {
-        return (decimal) ? new Num(value) : new Num((long) value);
+        return (decimal) ? Num.create(value) : Num.create((long) value);
     }
 
     public double get()
@@ -49,7 +49,7 @@ public class Num implements Constant<Num>
         return get(this.value / num.value, this.isDecimal || num.isDecimal);
     }
 
-    public Num divFloat(Num num)
+    public Num divf(Num num)
     {
         return get(this.value / num.value, true);
     }
@@ -76,22 +76,22 @@ public class Num implements Constant<Num>
 
     public Bool less(Num num)
     {
-        return new Bool(this.value < num.value);
+        return Bool.create(this.value < num.value);
     }
 
     public Bool lessOrEqual(Num num)
     {
-        return new Bool(this.value <= num.value);
+        return Bool.create(this.value <= num.value);
     }
 
     public Bool greater(Num num)
     {
-        return new Bool(this.value > num.value);
+        return Bool.create(this.value > num.value);
     }
 
     public Bool greaterOrEqual(Num num)
     {
-        return new Bool(this.value >= num.value);
+        return Bool.create(this.value >= num.value);
     }
 
     @Override

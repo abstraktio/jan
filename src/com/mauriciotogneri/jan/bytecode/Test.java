@@ -1,7 +1,6 @@
 package com.mauriciotogneri.jan.bytecode;
 
 import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$add;
-import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$div;
 import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$mul;
 import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$sub;
 import com.mauriciotogneri.jan.bytecode.functions.Comparison.$equals;
@@ -56,7 +55,7 @@ public class Test
                 {
                     if ($equals.$equalsNum.call(Num.create(0)).call($length.instance.call(array)).isTrue())
                     {
-                        return new Array<>();
+                        return Array.create();
                     }
 
                     A x = array.get(Num.create(0));
@@ -120,17 +119,17 @@ public class Test
         }
     }
 
-    // half :: -> ( % -> % )
-    // / 2
+    // doubleMe :: -> ( % -> % )
+    // * 2
 
-    public static class half implements Function0<Function1<Num, Num>>
+    public static class doubleMe implements Function0<Function1<Num, Num>>
     {
-        public static final half instance = new half();
+        public static final doubleMe instance = new doubleMe();
 
         @Override
         public Function1<Num, Num> call()
         {
-            return $div.instance.call(Num.create(2));
+            return $mul.instance.call(Num.create(2));
         }
     }
 
@@ -207,12 +206,10 @@ public class Test
     @SuppressWarnings("unchecked")
     public static void main(String[] args)
     {
-        check(duplicate.instance.call(Num.create(23)), Num.create(46));
-
         check(factorial.instance.call(Num.create(5)), Num.create(120));
 
-        Array<Num> input = new Array<>(Num.create(1), Num.create(2), Num.create(3));
-        Array<Num> output = new Array<>(Num.create(2), Num.create(4), Num.create(6));
+        Array<Num> input = Array.create(Num.create(1), Num.create(2), Num.create(3));
+        Array<Num> output = Array.create(Num.create(2), Num.create(4), Num.create(6));
         check(new map<Num, Num>().call(duplicate.instance).call(input), output);
 
         Num a = Num.create(5);
@@ -220,12 +217,24 @@ public class Test
         Num c = Num.create(2);
         check(custom.instance.call(a).call(b).call(c), Num.create(19));
 
-        Num d = Num.create(7);
-        check(mul3.instance.call(d), Num.create(21));
+        check(mul3.instance.call(Num.create(7)), Num.create(21));
+
+        check(duplicate.instance.call(Num.create(23)), Num.create(46));
+        check(doubleMe.instance.call().call(Num.create(23)), Num.create(46));
+
+        Array<Function1<Num, Num>> listOfFunctions = Array.create((Function1<Num, Num>) mul3.instance);
+        check(listOfFunctions.get(Num.create(0)).call(Num.create(4)), Num.create(12));
     }
 
     private static <A> void check(Constant<A> c1, Constant<A> c2)
     {
-        System.out.println(c1.isEqual(c2).isTrue() + "   " + c1.call());
+        if (c1.isEqual(c2).isTrue())
+        {
+            System.out.println("true    " + c1.call());
+        }
+        else
+        {
+            System.out.println("false   " + c1.call() + " " + c2.call());
+        }
     }
 }

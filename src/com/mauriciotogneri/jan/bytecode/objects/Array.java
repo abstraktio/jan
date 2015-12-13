@@ -1,6 +1,7 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
+import com.mauriciotogneri.jan.bytecode.kernel.Function0;
 
 import java.util.Arrays;
 
@@ -8,18 +9,13 @@ public class Array<T> implements Constant<Array<T>>
 {
     private final Object[] data;
 
-    protected Array()
-    {
-        this.data = new Object[0];
-    }
-
-    protected Array(int size)
+    private Array(int size)
     {
         this.data = new Object[size];
     }
 
     @SuppressWarnings("unchecked")
-    public Array(T... data)
+    private Array(T... data)
     {
         this.data = clone(data);
     }
@@ -166,10 +162,10 @@ public class Array<T> implements Constant<Array<T>>
                 builder.append(", ");
             }
 
-            if (object instanceof Constant)
+            if (object instanceof Function0)
             {
-                Constant c = (Constant) object;
-                builder.append(c.call());
+                Function0 constant = (Function0) object;
+                builder.append(constant.call());
             }
             else
             {
@@ -180,6 +176,11 @@ public class Array<T> implements Constant<Array<T>>
         builder.append("]");
 
         return builder.toString();
+    }
+
+    public static <T> Array<T> create(T... data)
+    {
+        return new Array<>(data);
     }
 
     @Override
