@@ -1,7 +1,14 @@
 package com.mauriciotogneri.jan.bytecode;
 
+import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$add;
+import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$mul;
+import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$sub;
+import com.mauriciotogneri.jan.bytecode.functions.Comparison.$equals;
+import com.mauriciotogneri.jan.bytecode.kernel.Constant;
+import com.mauriciotogneri.jan.bytecode.kernel.Function;
+import com.mauriciotogneri.jan.bytecode.kernel.Function2;
+import com.mauriciotogneri.jan.bytecode.kernel.Function3;
 import com.mauriciotogneri.jan.bytecode.objects.Array;
-import com.mauriciotogneri.jan.bytecode.objects.Bool;
 import com.mauriciotogneri.jan.bytecode.objects.Num;
 
 public class Test
@@ -17,7 +24,7 @@ public class Test
         @Override
         public Num call(final Num n)
         {
-            if ($equals.instance.call(n).call(Num.create(0)).isTrue())
+            if ($equals.$equalsNum.call(n).call(Num.create(0)).isTrue())
             {
                 return Num.create(1);
             }
@@ -43,7 +50,7 @@ public class Test
                 @Override
                 public Array<B> call(final Array<A> array)
                 {
-                    if ($equals.instance.call(Num.create(0)).call($length.instance.call(array)).isTrue())
+                    if ($equals.$equalsNum.call(Num.create(0)).call($length.instance.call(array)).isTrue())
                     {
                         return new Array<>();
                     }
@@ -52,27 +59,6 @@ public class Test
                     Array<A> xs = array.remove(0);
 
                     return new $concatenateBefore<B>().call(function.call(x)).call(new map<A, B>().call(function).call(xs));
-                }
-            };
-        }
-    }
-
-    // = :: a A b A -> ?
-    // = a b
-
-    public static class $equals implements Function2<Constant, Constant, Bool>
-    {
-        public static final $equals instance = new $equals();
-
-        @Override
-        public Function<Constant, Bool> call(final Constant a)
-        {
-            return new Function<Constant, Bool>()
-            {
-                @Override
-                public Bool call(final Constant b)
-                {
-                    return Bool.create(a.equals(b));
                 }
             };
         }
@@ -89,69 +75,6 @@ public class Test
         public Num call(final Array<A> a)
         {
             return a.length();
-        }
-    }
-
-    // * :: a % b % -> %
-    // * a b
-
-    public static class $mul implements Function2<Num, Num, Num>
-    {
-        public static final $mul instance = new $mul();
-
-        @Override
-        public Function<Num, Num> call(final Num a)
-        {
-            return new Function<Num, Num>()
-            {
-                @Override
-                public Num call(final Num b)
-                {
-                    return a.mul(b);
-                }
-            };
-        }
-    }
-
-    // + :: a % b % -> %
-    // + a b
-
-    public static class $add implements Function2<Num, Num, Num>
-    {
-        public static final $add instance = new $add();
-
-        @Override
-        public Function<Num, Num> call(final Num a)
-        {
-            return new Function<Num, Num>()
-            {
-                @Override
-                public Num call(final Num b)
-                {
-                    return a.add(b);
-                }
-            };
-        }
-    }
-
-    // - :: a % b % -> %
-    // - a b
-
-    public static class $sub implements Function2<Num, Num, Num>
-    {
-        public static final $sub instance = new $sub();
-
-        @Override
-        public Function<Num, Num> call(final Num a)
-        {
-            return new Function<Num, Num>()
-            {
-                @Override
-                public Num call(final Num b)
-                {
-                    return a.sub(b);
-                }
-            };
         }
     }
 
@@ -191,12 +114,11 @@ public class Test
     // pi -> %
     // 3.13159
 
-    public static class pi implements Constant<Num>
+    public static class pi extends Num
     {
-        @Override
-        public Num call()
+        private pi()
         {
-            return Num.create(3.14159);
+            super(3.14159);
         }
     }
 
@@ -326,23 +248,5 @@ public class Test
     private static void print(Object object)
     {
         System.out.println(object);
-    }
-
-    public interface Constant<R>
-    {
-        R call();
-    }
-
-    public interface Function<A, Z>
-    {
-        Z call(A a);
-    }
-
-    public interface Function2<A, B, Z> extends Function<A, Function<B, Z>>
-    {
-    }
-
-    public interface Function3<A, B, C, Z> extends Function2<A, B, Function<C, Z>>
-    {
     }
 }

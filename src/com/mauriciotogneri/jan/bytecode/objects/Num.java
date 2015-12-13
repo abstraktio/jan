@@ -1,19 +1,19 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
-import com.mauriciotogneri.jan.bytecode.Test.Constant;
+import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 
 public class Num implements Constant<Num>
 {
     private final boolean isDecimal;
     private final double value;
 
-    private Num(long value)
+    protected Num(long value)
     {
         this.isDecimal = false;
         this.value = value;
     }
 
-    private Num(double value)
+    protected Num(double value)
     {
         this.isDecimal = true;
         this.value = value;
@@ -96,31 +96,48 @@ public class Num implements Constant<Num>
     }
 
     @Override
-    public boolean equals(Object o)
+    public Bool isEqual(Constant<Num> object)
     {
-        if (this == o)
-        {
-            return true;
-        }
-        else if (o == null || getClass() != o.getClass())
-        {
-            return false;
-        }
-
-        Num num = (Num) o;
-
-        return Double.compare(num.value, value) == 0;
+        return Bool.create(isEquivalent(object));
     }
 
     @Override
-    public int hashCode()
+    public Bool isNotEqual(Constant<Num> object)
     {
-        int result = (isDecimal ? 1 : 0);
-        long temp = Double.doubleToLongBits(value);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-
-        return result;
+        return Bool.create(!isEquivalent(object));
     }
+
+    private boolean isEquivalent(Constant<Num> object)
+    {
+        return (Double.compare(object.call().value, this.value) == 0);
+    }
+
+    //    @Override
+    //    public boolean equals(Object o)
+    //    {
+    //        if (this == o)
+    //        {
+    //            return true;
+    //        }
+    //        else if (o == null || getClass() != o.getClass())
+    //        {
+    //            return false;
+    //        }
+    //
+    //        Num num = (Num) o;
+    //
+    //        return Double.compare(num.value, value) == 0;
+    //    }
+    //
+    //    @Override
+    //    public int hashCode()
+    //    {
+    //        int result = (isDecimal ? 1 : 0);
+    //        long temp = Double.doubleToLongBits(value);
+    //        result = 31 * result + (int) (temp ^ (temp >>> 32));
+    //
+    //        return result;
+    //    }
 
     public static Num create(long value)
     {

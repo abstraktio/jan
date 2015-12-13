@@ -1,12 +1,12 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
-import com.mauriciotogneri.jan.bytecode.Test.Constant;
+import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 
 public class Bool implements Constant<Bool>
 {
     private final boolean value;
 
-    public Bool(boolean value)
+    protected Bool(boolean value)
     {
         this.value = value;
     }
@@ -38,28 +38,45 @@ public class Bool implements Constant<Bool>
     }
 
     @Override
-    public boolean equals(Object o)
+    public Bool isEqual(Constant<Bool> object)
     {
-        if (this == o)
-        {
-            return true;
-        }
-        else if (o == null || getClass() != o.getClass())
-        {
-            return false;
-        }
-
-        Bool bool = (Bool) o;
-
-        return value == bool.value;
-
+        return Bool.create(isEquivalent(object));
     }
 
     @Override
-    public int hashCode()
+    public Bool isNotEqual(Constant<Bool> object)
     {
-        return (value ? 1 : 0);
+        return Bool.create(!isEquivalent(object));
     }
+
+    private boolean isEquivalent(Constant<Bool> object)
+    {
+        return (object.call().value == this.value);
+    }
+
+    //    @Override
+    //    public boolean equals(Object o)
+    //    {
+    //        if (this == o)
+    //        {
+    //            return true;
+    //        }
+    //        else if (o == null || getClass() != o.getClass())
+    //        {
+    //            return false;
+    //        }
+    //
+    //        Bool bool = (Bool) o;
+    //
+    //        return value == bool.value;
+    //
+    //    }
+    //
+    //    @Override
+    //    public int hashCode()
+    //    {
+    //        return (value ? 1 : 0);
+    //    }
 
     public static Bool create(boolean value)
     {

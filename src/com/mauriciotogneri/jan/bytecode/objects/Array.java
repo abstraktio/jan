@@ -1,17 +1,17 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
-import com.mauriciotogneri.jan.bytecode.Test.Constant;
+import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 
 public class Array<T> implements Constant<Array<T>>
 {
     private final Object[] data;
 
-    public Array()
+    protected Array()
     {
         this.data = new Object[0];
     }
 
-    public Array(int size)
+    protected Array(int size)
     {
         this.data = new Object[size];
     }
@@ -96,6 +96,23 @@ public class Array<T> implements Constant<Array<T>>
         {
             return object;
         }
+    }
+
+    @Override
+    public Bool isEqual(Constant<Array<T>> object)
+    {
+        return Bool.create(isEquivalent(object));
+    }
+
+    @Override
+    public Bool isNotEqual(Constant<Array<T>> object)
+    {
+        return Bool.create(!isEquivalent(object));
+    }
+
+    private boolean isEquivalent(Constant<Array<T>> object)
+    {
+        return false; // TODO
     }
 
     @Override

@@ -1,10 +1,10 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
-import com.mauriciotogneri.jan.bytecode.Test.Constant;
+import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 
 public class Char implements Constant<Char>
 {
-    private final char value;
+    protected final char value;
 
     private Char(char value)
     {
@@ -18,28 +18,45 @@ public class Char implements Constant<Char>
     }
 
     @Override
-    public boolean equals(Object o)
+    public Bool isEqual(Constant<Char> object)
     {
-        if (this == o)
-        {
-            return true;
-        }
-        else if (o == null || getClass() != o.getClass())
-        {
-            return false;
-        }
-
-        Char aChar = (Char) o;
-
-        return value == aChar.value;
-
+        return Bool.create(isEquivalent(object));
     }
 
     @Override
-    public int hashCode()
+    public Bool isNotEqual(Constant<Char> object)
     {
-        return (int) value;
+        return Bool.create(!isEquivalent(object));
     }
+
+    private boolean isEquivalent(Constant<Char> object)
+    {
+        return (object.call().value == this.value);
+    }
+
+    //    @Override
+    //    public boolean equals(Object o)
+    //    {
+    //        if (this == o)
+    //        {
+    //            return true;
+    //        }
+    //        else if (o == null || getClass() != o.getClass())
+    //        {
+    //            return false;
+    //        }
+    //
+    //        Char aChar = (Char) o;
+    //
+    //        return value == aChar.value;
+    //
+    //    }
+    //
+    //    @Override
+    //    public int hashCode()
+    //    {
+    //        return (int) value;
+    //    }
 
     public static Char create(char value)
     {
