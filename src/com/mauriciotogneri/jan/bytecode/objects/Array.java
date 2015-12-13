@@ -23,9 +23,9 @@ public class Array<T> implements Constant<Array<T>>
     }
 
     @SuppressWarnings("unchecked")
-    public T get(int index)
+    public T get(Num index)
     {
-        return (T) data[index];
+        return (T) data[(int) index.get()];
     }
 
     public Num length()
@@ -33,7 +33,7 @@ public class Array<T> implements Constant<Array<T>>
         return Num.create(data.length);
     }
 
-    public Array<T> concatenateAfter(T element)
+    public Array<T> addAfter(T element)
     {
         Array<T> result = new Array<>(data.length + 1);
 
@@ -47,7 +47,7 @@ public class Array<T> implements Constant<Array<T>>
         return result;
     }
 
-    public Array<T> concatenateBefore(T element)
+    public Array<T> addBefore(T element)
     {
         Array<T> result = new Array<>(data.length + 1);
         result.data[0] = element;
@@ -60,15 +60,16 @@ public class Array<T> implements Constant<Array<T>>
         return result;
     }
 
-    public Array<T> remove(int index)
+    public Array<T> remove(Num index)
     {
         Array<T> result = new Array<>(data.length - 1);
 
         int position = 0;
+        int indexValue = (int)index.get();
 
         for (int i = 0; i < data.length; i++)
         {
-            if (i != index)
+            if (i != indexValue)
             {
                 result.data[position++] = clone(data[i]);
             }

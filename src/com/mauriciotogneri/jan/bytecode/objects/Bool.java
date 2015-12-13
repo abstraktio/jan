@@ -11,11 +11,6 @@ public class Bool implements Constant<Bool>
         this.value = value;
     }
 
-    public Bool negate()
-    {
-        return new Bool(!value);
-    }
-
     public Bool and(Bool bool)
     {
         return new Bool(this.value && bool.value);
@@ -24,6 +19,11 @@ public class Bool implements Constant<Bool>
     public Bool or(Bool bool)
     {
         return new Bool(this.value || bool.value);
+    }
+
+    public Bool neg()
+    {
+        return new Bool(!value);
     }
 
     public boolean isTrue()

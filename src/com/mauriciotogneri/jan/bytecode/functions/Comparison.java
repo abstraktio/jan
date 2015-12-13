@@ -59,7 +59,7 @@ public class Comparison
         }
     }
 
-    // < :: a A b A -> ?
+    // < :: a % b % -> ?
     // < a b
 
     public static class $less implements Function2<Num, Num, Bool>
@@ -75,6 +75,69 @@ public class Comparison
                 public Bool call(final Num b)
                 {
                     return a.less(b);
+                }
+            };
+        }
+    }
+
+    // <= :: a % b % -> ?
+    // <= a b
+
+    public static class $lessOrEqual implements Function2<Num, Num, Bool>
+    {
+        public static final $lessOrEqual instance = new $lessOrEqual();
+
+        @Override
+        public Function<Num, Bool> call(final Num a)
+        {
+            return new Function<Num, Bool>()
+            {
+                @Override
+                public Bool call(final Num b)
+                {
+                    return a.lessOrEqual(b);
+                }
+            };
+        }
+    }
+
+    // > :: a % b % -> ?
+    // > a b
+
+    public static class $greater implements Function2<Num, Num, Bool>
+    {
+        public static final $greater instance = new $greater();
+
+        @Override
+        public Function<Num, Bool> call(final Num a)
+        {
+            return new Function<Num, Bool>()
+            {
+                @Override
+                public Bool call(final Num b)
+                {
+                    return a.greater(b);
+                }
+            };
+        }
+    }
+
+    // >= :: a % b % -> ?
+    // >= a b
+
+    public static class $greaterOrEqual implements Function2<Num, Num, Bool>
+    {
+        public static final $greaterOrEqual instance = new $greaterOrEqual();
+
+        @Override
+        public Function<Num, Bool> call(final Num a)
+        {
+            return new Function<Num, Bool>()
+            {
+                @Override
+                public Bool call(final Num b)
+                {
+                    return a.greaterOrEqual(b);
                 }
             };
         }

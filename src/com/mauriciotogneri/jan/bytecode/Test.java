@@ -4,6 +4,8 @@ import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$add;
 import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$mul;
 import com.mauriciotogneri.jan.bytecode.functions.Arithmetic.$sub;
 import com.mauriciotogneri.jan.bytecode.functions.Comparison.$equals;
+import com.mauriciotogneri.jan.bytecode.functions.List.$addBefore;
+import com.mauriciotogneri.jan.bytecode.functions.List.$length;
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 import com.mauriciotogneri.jan.bytecode.kernel.Function;
 import com.mauriciotogneri.jan.bytecode.kernel.Function2;
@@ -55,45 +57,10 @@ public class Test
                         return new Array<>();
                     }
 
-                    A x = array.get(0);
-                    Array<A> xs = array.remove(0);
+                    A x = array.get(Num.create(0));
+                    Array<A> xs = array.remove(Num.create(0));
 
-                    return new $concatenateBefore<B>().call(function.call(x)).call(new map<A, B>().call(function).call(xs));
-                }
-            };
-        }
-    }
-
-    // # :: a [ A ] -> %
-    // # a
-
-    public static class $length<A> implements Function<Array<A>, Num>
-    {
-        public static final $length instance = new $length();
-
-        @Override
-        public Num call(final Array<A> a)
-        {
-            return a.length();
-        }
-    }
-
-    // + :: a A b [ A ] -> [ A ]
-    // + a b
-
-    public static class $concatenateBefore<A> implements Function2<A, Array<A>, Array<A>>
-    {
-        public static final $concatenateBefore instance = new $concatenateBefore();
-
-        @Override
-        public Function<Array<A>, Array<A>> call(final A a)
-        {
-            return new Function<Array<A>, Array<A>>()
-            {
-                @Override
-                public Array<A> call(final Array<A> b)
-                {
-                    return b.concatenateBefore(a);
+                    return new $addBefore<B>().call(function.call(x)).call(new map<A, B>().call(function).call(xs));
                 }
             };
         }

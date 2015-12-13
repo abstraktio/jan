@@ -24,6 +24,11 @@ public class Num implements Constant<Num>
         return (decimal) ? new Num(value) : new Num((long) value);
     }
 
+    public double get()
+    {
+        return value;
+    }
+
     public Num add(Num num)
     {
         return get(this.value + num.value, this.isDecimal || num.isDecimal);
@@ -74,7 +79,7 @@ public class Num implements Constant<Num>
         return new Bool(this.value < num.value);
     }
 
-    public Bool lessEquals(Num num)
+    public Bool lessOrEqual(Num num)
     {
         return new Bool(this.value <= num.value);
     }
@@ -84,7 +89,7 @@ public class Num implements Constant<Num>
         return new Bool(this.value > num.value);
     }
 
-    public Bool greaterEquals(Num num)
+    public Bool greaterOrEqual(Num num)
     {
         return new Bool(this.value >= num.value);
     }
