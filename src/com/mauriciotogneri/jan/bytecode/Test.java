@@ -9,19 +9,19 @@ public class Test
     // factorial :: n % -> %
     // ? = n 0 1
     // * n factorial - n 1
-    public static class factorial implements Function<Constant<Num>, Constant<Num>>
+    public static class factorial implements Function<Num, Num>
     {
         public static final factorial instance = new factorial();
 
         @Override
-        public Constant<Num> call(final Constant<Num> n)
+        public Num call(final Num n)
         {
-            if ($equals.instance.call(n).call(Num.asConstant(0)).call().isTrue())
+            if ($equals.instance.call(n).call(Num.create(0)).call().isTrue())
             {
-                return Num.asConstant(1);
+                return Num.create(1);
             }
 
-            return $mul.instance.call(n).call(factorial.instance.call($sub.instance.call(n).call(Num.asConstant(1))));
+            return $mul.instance.call(n).call(factorial.instance.call($sub.instance.call(n).call(Num.create(1))));
         }
     }
 
@@ -32,57 +32,29 @@ public class Test
     // + function x map ( function ) xs
 
     @SuppressWarnings("unchecked")
-    public static class map<A, B> implements Function<Function<Constant<A>, Constant<B>>, Function<Constant<Array<A>>, Constant<Array<B>>>>
+    public static class map<A, B> implements Function<Function<A, B>, Function<Array<A>, Array<B>>>
     {
         @Override
-        public Function<Constant<Array<A>>, Constant<Array<B>>> call(final Function<Constant<A>, Constant<B>> function)
+        public Function<Array<A>, Array<B>> call(final Function<A, B> function)
         {
-            return new Function<Constant<Array<A>>, Constant<Array<B>>>()
+            return new Function<Array<A>, Array<B>>()
             {
                 @Override
-                public Constant<Array<B>> call(final Constant<Array<A>> array)
+                public Array<B> call(final Array<A> array)
                 {
-                    if ($equals.instance.call(Num.asConstant(0)).call($length.instance.call(array)).call().isTrue())
+                    if ($equals.instance.call(Num.create(0)).call($length.instance.call(array)).call().isTrue())
                     {
-                        return new Constant<Array<B>>()
-                        {
-                            @Override
-                            public Array<B> call()
-                            {
-                                return new Array<>();
-                            }
-                        };
+                        return new Array<>();
                     }
 
-                    final Constant<A> x = new Constant<A>()
-                    {
-                        @Override
-                        public A call()
-                        {
-                            return array.call().get(0);
-                        }
-                    };
-                    final Constant<Array<A>> xs = new Constant<Array<A>>()
-                    {
-                        @Override
-                        public Array<A> call()
-                        {
-                            return array.call().remove(0);
-                        }
-                    };
+                    final A x = array.call().get(0);
+                    final Array<A> xs = array.call().remove(0);
 
-                    final Constant<B> _1 = function.call(x);
-                    final Function<Constant<Array<A>>, Constant<Array<B>>> _2 = new map<A, B>().call(function);
-                    final Constant<Array<B>> _3 = _2.call(xs);
+                    final B _1 = function.call(x);
+                    final Function<Array<A>, Array<B>> _2 = new map<A, B>().call(function);
+                    final Array<B> _3 = _2.call(xs);
 
-                    return new Constant<Array<B>>()
-                    {
-                        @Override
-                        public Array<B> call()
-                        {
-                            return _3.call().concatenateBefore(_1.call());
-                        }
-                    };
+                    return _3.call().concatenateBefore(_1);
                 }
             };
         }
@@ -91,19 +63,19 @@ public class Test
     // = :: a % b % -> ?
     // = a b
 
-    public static class $equals implements Function<Constant<Num>, Function<Constant<Num>, Constant<Bool>>>
+    public static class $equals implements Function<Num, Function<Num, Bool>>
     {
         public static final $equals instance = new $equals();
 
         @Override
-        public Function<Constant<Num>, Constant<Bool>> call(final Constant<Num> a)
+        public Function<Num, Bool> call(final Num a)
         {
-            return new Function<Constant<Num>, Constant<Bool>>()
+            return new Function<Num, Bool>()
             {
                 @Override
-                public Constant<Bool> call(final Constant<Num> b)
+                public Bool call(final Num b)
                 {
-                    return Bool.asConstant(a.call().equals(b.call()));
+                    return Bool.create(a.call().equals(b.call()));
                 }
             };
         }
@@ -112,55 +84,23 @@ public class Test
     // # :: a [ A ] -> %
     // # a
 
-    public static class $length<A> implements Function<Constant<Array<A>>, Constant<Num>>
+    public static class $length<A> implements Function<Array<A>, Num>
     {
         public static final $length instance = new $length();
 
         @Override
-        public Constant<Num> call(final Constant<Array<A>> a)
+        public Num call(final Array<A> a)
         {
-            return new Constant<Num>()
-            {
-                @Override
-                public Num call()
-                {
-                    return a.call().length();
-                }
-            };
+            return a.call().length();
         }
     }
 
     // * :: a % b % -> %
     // * a b
 
-    public static class $mul implements Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>
+    public static class $mul implements Function<Num, Function<Num, Num>>
     {
         public static final $mul instance = new $mul();
-
-        @Override
-        public Function<Constant<Num>, Constant<Num>> call(final Constant<Num> a)
-        {
-            return new Function<Constant<Num>, Constant<Num>>()
-            {
-                @Override
-                public Constant<Num> call(final Constant<Num> b)
-                {
-                    return new Constant<Num>()
-                    {
-                        @Override
-                        public Num call()
-                        {
-                            return a.call().mul(b.call());
-                        }
-                    };
-                }
-            };
-        }
-    }
-
-    public static class $mul2 implements Function<Num, Function<Num, Num>>
-    {
-        public static final $mul2 instance = new $mul2();
 
         @Override
         public Function<Num, Num> call(final Num a)
@@ -179,26 +119,19 @@ public class Test
     // + :: a % b % -> %
     // + a b
 
-    public static class $add implements Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>
+    public static class $add implements Function<Num, Function<Num, Num>>
     {
         public static final $add instance = new $add();
 
         @Override
-        public Function<Constant<Num>, Constant<Num>> call(final Constant<Num> a)
+        public Function<Num, Num> call(final Num a)
         {
-            return new Function<Constant<Num>, Constant<Num>>()
+            return new Function<Num, Num>()
             {
                 @Override
-                public Constant<Num> call(final Constant<Num> b)
+                public Num call(final Num b)
                 {
-                    return new Constant<Num>()
-                    {
-                        @Override
-                        public Num call()
-                        {
-                            return a.call().add(b.call());
-                        }
-                    };
+                    return a.call().add(b.call());
                 }
             };
         }
@@ -207,26 +140,19 @@ public class Test
     // - :: a % b % -> %
     // - a b
 
-    public static class $sub implements Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>
+    public static class $sub implements Function<Num, Function<Num, Num>>
     {
         public static final $sub instance = new $sub();
 
         @Override
-        public Function<Constant<Num>, Constant<Num>> call(final Constant<Num> a)
+        public Function<Num, Num> call(final Num a)
         {
-            return new Function<Constant<Num>, Constant<Num>>()
+            return new Function<Num, Num>()
             {
                 @Override
-                public Constant<Num> call(final Constant<Num> b)
+                public Num call(final Num b)
                 {
-                    return new Constant<Num>()
-                    {
-                        @Override
-                        public Num call()
-                        {
-                            return a.call().sub(b.call());
-                        }
-                    };
+                    return a.sub(b);
                 }
             };
         }
@@ -235,10 +161,10 @@ public class Test
     // multiplyBy :: n % -> ( % -> % )
     // * n
 
-    public static class multiplyBy implements Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>
+    public static class multiplyBy implements Function<Num, Function<Num, Num>>
     {
         @Override
-        public Function<Constant<Num>, Constant<Num>> call(final Constant<Num> n)
+        public Function<Num, Num> call(final Num n)
         {
             return $mul.instance.call(n);
         }
@@ -259,22 +185,22 @@ public class Test
     // custom :: a % b % c % -> %
     // + * c b a
 
-    public static class custom implements Function<Constant<Num>, Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>>
+    public static class custom implements Function<Num, Function<Num, Function<Num, Num>>>
     {
         public static final custom instance = new custom();
 
         @Override
-        public Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>> call(final Constant<Num> a)
+        public Function<Num, Function<Num, Num>> call(final Num a)
         {
-            return new Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>()
+            return new Function<Num, Function<Num, Num>>()
             {
                 @Override
-                public Function<Constant<Num>, Constant<Num>> call(final Constant<Num> b)
+                public Function<Num, Num> call(final Num b)
                 {
-                    return new Function<Constant<Num>, Constant<Num>>()
+                    return new Function<Num, Num>()
                     {
                         @Override
-                        public Constant<Num> call(final Constant<Num> c)
+                        public Num call(final Num c)
                         {
                             return $add.instance.call(a).call($mul.instance.call(b).call(c));
                         }
@@ -287,42 +213,31 @@ public class Test
     // duplicate :: a % -> %
     // * a 2
 
-    public static class duplicate implements Function<Constant<Num>, Constant<Num>>
+    public static class duplicate implements Function<Num, Num>
     {
         public static final duplicate instance = new duplicate();
 
         @Override
-        public Constant<Num> call(final Constant<Num> a)
-        {
-            return $mul.instance.call(a).call(Num.asConstant(2));
-        }
-    }
-
-    public static class duplicate2 implements Function<Num, Num>
-    {
-        public static final duplicate2 instance = new duplicate2();
-
-        @Override
         public Num call(final Num a)
         {
-            return $mul2.instance.call(a).call(Num.create(2));
+            return $mul.instance.call(a).call(Num.create(2));
         }
     }
 
     // multi :: a % b % -> %
     // * a b
 
-    public static class multi implements Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>
+    public static class multi implements Function<Num, Function<Num, Num>>
     {
         public static final multi instance = new multi();
 
         @Override
-        public Function<Constant<Num>, Constant<Num>> call(final Constant<Num> a)
+        public Function<Num, Num> call(final Num a)
         {
-            return new Function<Constant<Num>, Constant<Num>>()
+            return new Function<Num, Num>()
             {
                 @Override
-                public Constant<Num> call(final Constant<Num> b)
+                public Num call(final Num b)
                 {
                     return $mul.instance.call(a).call(b);
                 }
@@ -333,47 +248,33 @@ public class Test
     // mul3 :: a % -> %
     // * 3 a
 
-    public static class mul3 implements Function<Constant<Num>, Constant<Num>>
+    public static class mul3 implements Function<Num, Num>
     {
         public static final mul3 instance = new mul3();
 
         @Override
-        public Constant<Num> call(final Constant<Num> a)
+        public Num call(final Num a)
         {
-            return new Constant<Num>()
-            {
-                @Override
-                public Num call()
-                {
-                    return Num.create(3).mul(a.call());
-                }
-            };
+            return Num.create(3).mul(a.call());
         }
     }
 
     // mul3AndAdd :: a % b % -> %
     // + * 3 a b
 
-    public static class mul3AndAdd implements Function<Constant<Num>, Function<Constant<Num>, Constant<Num>>>
+    public static class mul3AndAdd implements Function<Num, Function<Num, Num>>
     {
         public static final mul3AndAdd instance = new mul3AndAdd();
 
         @Override
-        public Function<Constant<Num>, Constant<Num>> call(final Constant<Num> a)
+        public Function<Num, Num> call(final Num a)
         {
-            return new Function<Constant<Num>, Constant<Num>>()
+            return new Function<Num, Num>()
             {
                 @Override
-                public Constant<Num> call(final Constant<Num> b)
+                public Num call(final Num b)
                 {
-                    return new Constant<Num>()
-                    {
-                        @Override
-                        public Num call()
-                        {
-                            return Num.create(3).mul(a.call()).add(b.call());
-                        }
-                    };
+                    return Num.create(3).mul(a.call()).add(b.call());
                 }
             };
         }
@@ -382,12 +283,12 @@ public class Test
     @SuppressWarnings("unchecked")
     public static void main(String[] args)
     {
-        print(duplicate2.instance.call(Num.create(23)));
+        print(duplicate.instance.call(Num.create(23)));
 
-        Constant<Num> n = Num.asConstant(5);
+        Num n = Num.create(5);
         print(factorial.instance.call(n));
 
-        Constant<Array<Num>> array = new Constant<Array<Num>>()
+        Array<Num> array = new Array<Num>()
         {
             @Override
             public Array<Num> call()
@@ -397,12 +298,12 @@ public class Test
         };
         print(new map<Num, Num>().call(duplicate.instance).call(array));
 
-        Constant<Num> a = Num.asConstant(5);
-        Constant<Num> b = Num.asConstant(7);
-        Constant<Num> c = Num.asConstant(2);
+        Num a = Num.create(5);
+        Num b = Num.create(7);
+        Num c = Num.create(2);
         print(custom.instance.call(a).call(b).call(c));
 
-        Constant<Num> d = Num.asConstant(7);
+        Num d = Num.create(7);
         print(mul3.instance.call(d));
     }
 

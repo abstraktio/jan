@@ -2,7 +2,7 @@ package com.mauriciotogneri.jan.bytecode.objects;
 
 import com.mauriciotogneri.jan.bytecode.Test.Constant;
 
-public class Char
+public class Char implements Constant<Char>
 {
     private final char value;
 
@@ -46,15 +46,9 @@ public class Char
         return new Char(value);
     }
 
-    public static Constant<Char> asConstant(final char value)
+    @Override
+    public Char call()
     {
-        return new Constant<Char>()
-        {
-            @Override
-            public Char call()
-            {
-                return new Char(value);
-            }
-        };
+        return this;
     }
 }

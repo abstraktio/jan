@@ -2,7 +2,7 @@ package com.mauriciotogneri.jan.bytecode.objects;
 
 import com.mauriciotogneri.jan.bytecode.Test.Constant;
 
-public class Array<T>
+public class Array<T> implements Constant<Array<T>>
 {
     private final Object[] data;
 
@@ -125,5 +125,11 @@ public class Array<T>
         builder.append("]");
 
         return builder.toString();
+    }
+
+    @Override
+    public Array<T> call()
+    {
+        return this;
     }
 }

@@ -132,30 +132,6 @@ public class Num implements Constant<Num>
         return new Num(value);
     }
 
-    public static Constant<Num> asConstant(final long value)
-    {
-        return new Constant<Num>()
-        {
-            @Override
-            public Num call()
-            {
-                return new Num(value);
-            }
-        };
-    }
-
-    public static Constant<Num> asConstant(final double value)
-    {
-        return new Constant<Num>()
-        {
-            @Override
-            public Num call()
-            {
-                return new Num(value);
-            }
-        };
-    }
-
     @Override
     public Num call()
     {

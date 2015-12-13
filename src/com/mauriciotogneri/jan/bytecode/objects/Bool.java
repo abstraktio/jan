@@ -2,7 +2,7 @@ package com.mauriciotogneri.jan.bytecode.objects;
 
 import com.mauriciotogneri.jan.bytecode.Test.Constant;
 
-public class Bool
+public class Bool implements Constant<Bool>
 {
     private final boolean value;
 
@@ -66,15 +66,9 @@ public class Bool
         return new Bool(value);
     }
 
-    public static Constant<Bool> asConstant(final boolean value)
+    @Override
+    public Bool call()
     {
-        return new Constant<Bool>()
-        {
-            @Override
-            public Bool call()
-            {
-                return new Bool(value);
-            }
-        };
+        return this;
     }
 }
