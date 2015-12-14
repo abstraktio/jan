@@ -47,12 +47,6 @@ public class Char implements Constant<Char>
 
     }
 
-    @Override
-    public int hashCode()
-    {
-        return (int) value;
-    }
-
     public static Char create(char value)
     {
         return new Char(value);

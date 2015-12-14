@@ -12,6 +12,7 @@ import com.mauriciotogneri.jan.bytecode.kernel.Function0;
 import com.mauriciotogneri.jan.bytecode.kernel.Function1;
 import com.mauriciotogneri.jan.bytecode.kernel.Function2;
 import com.mauriciotogneri.jan.bytecode.kernel.Function3;
+import com.mauriciotogneri.jan.bytecode.kernel.Tuple2;
 import com.mauriciotogneri.jan.bytecode.objects.Array;
 import com.mauriciotogneri.jan.bytecode.objects.Bool;
 import com.mauriciotogneri.jan.bytecode.objects.Num;
@@ -262,6 +263,27 @@ public class Test
         }
     }
 
+    // addPoints :: p1 { Num Num } p2 { Num Num } -> { Num Num }
+    // { ( + @0 p1 @0 p2 ) ( + @1 p1 @1 p2 ) }
+
+    public static class addPoints implements Function2<Tuple2<Num, Num>, Tuple2<Num, Num>, Tuple2<Num, Num>>
+    {
+        public static final addPoints instance = new addPoints();
+
+        @Override
+        public Function1<Tuple2<Num, Num>, Tuple2<Num, Num>> call(final Tuple2<Num, Num> a)
+        {
+            return new Function1<Tuple2<Num, Num>, Tuple2<Num, Num>>()
+            {
+                @Override
+                public Tuple2<Num, Num> call(final Tuple2<Num, Num> b)
+                {
+                    return new Tuple_NumNum(a._0().add(b._0()), a._1().add(b._1()));
+                }
+            };
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public static void main(String[] args)
     {
@@ -287,7 +309,12 @@ public class Test
 
         Array<Function1<Num, Num>> listOfFunctions = Array.create((Function1<Num, Num>) mul3.instance);
         check(listOfFunctions.get(Num.create(0)).call(Num.create(4)), Num.create(12));
-        System.out.print(listOfFunctions.get(Num.create(0)).toString());
+        System.out.println(listOfFunctions.get(Num.create(0)).toString());
+
+        Tuple_NumNum p1 = new Tuple_NumNum(Num.create(2), Num.create(3));
+        Tuple_NumNum p2 = new Tuple_NumNum(Num.create(6), Num.create(9));
+        Tuple_NumNum p3 = new Tuple_NumNum(Num.create(8), Num.create(12));
+        check(addPoints.instance.call(p1).call(p2), p3);
 
         // lambda example
         // ( \ a % b % -> % => + a b )
@@ -302,6 +329,71 @@ public class Test
         else
         {
             System.out.println("false   " + c1.call() + " " + c2.call());
+        }
+    }
+
+    public static class Tuple_NumNum implements Tuple2<Num, Num>
+    {
+        private final Num x;
+        private final Num y;
+
+        public Tuple_NumNum(Num x, Num y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public Num _0()
+        {
+            return this.x;
+        }
+
+        @Override
+        public Num _1()
+        {
+            return this.y;
+        }
+
+        @Override
+        public Bool isEqual(Constant<Tuple2> object)
+        {
+            return Bool.create(object.call().equals(this));
+        }
+
+        @Override
+        public Bool isNotEqual(Constant<Tuple2> object)
+        {
+            return Bool.create(!object.call().equals(this));
+        }
+
+        @Override
+        public boolean equals(Object o)
+        {
+            if (this == o)
+            {
+                return true;
+            }
+            else if (o == null || getClass() != o.getClass())
+            {
+                return false;
+            }
+
+            Tuple_NumNum point = (Tuple_NumNum) o;
+
+            return (this.x.equals(point.call().x)) && (this.y.equals(point.call().y));
+        }
+
+        @Override
+        public String toString()
+        {
+            return "( x: " + this.x + ", y: " + this.y + " )";
+        }
+
+        @Override
+        public Tuple_NumNum call()
+        {
+            return this;
         }
     }
 }

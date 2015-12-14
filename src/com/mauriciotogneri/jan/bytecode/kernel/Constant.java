@@ -11,6 +11,4 @@ public interface Constant<T> extends Function0<T>
     String toString();
 
     boolean equals(Object o);
-
-    int hashCode();
 }

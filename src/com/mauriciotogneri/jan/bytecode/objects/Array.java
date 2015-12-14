@@ -3,8 +3,6 @@ package com.mauriciotogneri.jan.bytecode.objects;
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 import com.mauriciotogneri.jan.bytecode.kernel.Function0;
 
-import java.util.Arrays;
-
 public class Array<T> implements Constant<Array<T>>
 {
     private final Object[] data;
@@ -141,12 +139,6 @@ public class Array<T> implements Constant<Array<T>>
         }
 
         return false;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return Arrays.hashCode(data);
     }
 
     @Override

@@ -70,12 +70,6 @@ public class Bool implements Constant<Bool>
 
     }
 
-    @Override
-    public int hashCode()
-    {
-        return (value ? 1 : 0);
-    }
-
     public static Bool create(boolean value)
     {
         return (value) ? TRUE : FALSE;

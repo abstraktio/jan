@@ -129,16 +129,6 @@ public class Num implements Constant<Num>
         return (Double.compare(num.value, value) == 0);
     }
 
-    @Override
-    public int hashCode()
-    {
-        int result = (isDecimal ? 1 : 0);
-        long temp = Double.doubleToLongBits(value);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-
-        return result;
-    }
-
     public static Num create(long value)
     {
         return new Num(value);
