@@ -4,7 +4,6 @@ import com.mauriciotogneri.jan.compiler.lexical.LexicalAnalyzer;
 import com.mauriciotogneri.jan.compiler.lexical.Token;
 import com.mauriciotogneri.jan.compiler.semantic.SemanticAnalyzer;
 import com.mauriciotogneri.jan.compiler.syntactic.SyntacticAnalyzer;
-import com.mauriciotogneri.jan.kernel.Function;
 import com.mauriciotogneri.jan.kernel.Program;
 
 import java.util.List;
@@ -23,20 +22,5 @@ public class Compiler
         semanticAnalyzer.analyze(program);
 
         return program;
-    }
-
-    public Function getAnonymousFunction(Program program, String line)
-    {
-        char[] characters = line.toCharArray();
-
-        LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
-        List<Token> tokens = lexicalAnalyzer.getTokens(characters);
-
-        SyntacticAnalyzer syntacticAnalyzer = new SyntacticAnalyzer();
-        Function function = syntacticAnalyzer.getFunction(tokens);
-
-        function.setTree(program);
-
-        return function;
     }
 }

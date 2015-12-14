@@ -1,31 +1,35 @@
 package com.mauriciotogneri.jan.compiler.lexical.states;
 
 import com.mauriciotogneri.jan.compiler.lexical.Character;
-import com.mauriciotogneri.jan.compiler.lexical.LexicalException;
+import com.mauriciotogneri.jan.compiler.lexical.CursorPosition;
 import com.mauriciotogneri.jan.compiler.lexical.State;
 import com.mauriciotogneri.jan.compiler.lexical.Token;
+import com.mauriciotogneri.jan.exceptions.LexicalException;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class InitialState extends State
 {
-    public InitialState(List<Token> tokens, int line, int column)
+    public InitialState(@NotNull List<Token> tokens, @NotNull CursorPosition cursorPosition)
     {
-        super(tokens, line, column);
+        super(tokens, cursorPosition);
     }
 
     @Override
-    public State process(Character character, int line, int column)
+    @NotNull
+    public State process(@NotNull Character character, @NotNull CursorPosition cursorPosition)
     {
         State state = this;
 
         if (character.isLetter())
         {
-            state = new SymbolState(getTokens(), character, line, column);
+            state = new SymbolState(getTokens(), character, cursorPosition);
         }
         else if (character.isDigit())
         {
-            state = new IntegerState(getTokens(), character, line, column);
+            state = new IntegerState(getTokens(), character, cursorPosition);
         }
         else
         {
@@ -36,39 +40,39 @@ public class InitialState extends State
                 case NEW_LINE:
                 case CARRIAGE_RETURN:
                     addCharacter(character);
-                    addToken(character.getDelimiterType());
+                    addToken(character.getDelimiterType(cursorPosition));
                     break;
 
                 case PLUS:
-                    state = new AddState(getTokens(), line, column);
+                    state = new AddState(getTokens(), cursorPosition);
                     break;
 
                 case MINUS:
-                    state = new SubtractState(getTokens(), line, column);
+                    state = new SubtractState(getTokens(), cursorPosition);
                     break;
 
                 case DOUBLE_QUOTES:
-                    state = new StringState(getTokens(), line, column);
+                    state = new StringState(getTokens(), cursorPosition);
                     break;
 
                 case EXCLAMATION:
-                    state = new NegationState(getTokens(), line, column);
+                    state = new NegationState(getTokens(), cursorPosition);
                     break;
 
                 case GREATER:
-                    state = new GreaterState(getTokens(), line, column);
+                    state = new GreaterState(getTokens(), cursorPosition);
                     break;
 
                 case LESS:
-                    state = new LessState(getTokens(), line, column);
+                    state = new LessState(getTokens(), cursorPosition);
                     break;
 
                 case QUESTION:
-                    state = new IfState(getTokens(), line, column);
+                    state = new IfState(getTokens(), cursorPosition);
                     break;
 
                 case SEMICOLON:
-                    state = new CommentState(getTokens(), line, column);
+                    state = new CommentState(getTokens(), cursorPosition);
                     break;
 
                 case STAR:
@@ -97,11 +101,11 @@ public class InitialState extends State
                     // case OPEN_BRACES:
                     // case CLOSE_BRACES:
 
-                    state = new OperatorState(getTokens(), character, line, column);
+                    state = new OperatorState(getTokens(), character, cursorPosition);
                     break;
 
                 default:
-                    throw new LexicalException(character, line, column);
+                    throw new LexicalException(character, cursorPosition);
             }
         }
 

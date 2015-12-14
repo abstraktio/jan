@@ -3,7 +3,7 @@ package com.mauriciotogneri.jan.compiler.syntactic.states;
 import com.mauriciotogneri.jan.compiler.lexical.Token;
 import com.mauriciotogneri.jan.compiler.lexical.Token.Type;
 import com.mauriciotogneri.jan.compiler.syntactic.State;
-import com.mauriciotogneri.jan.compiler.syntactic.SyntacticException;
+import com.mauriciotogneri.jan.exceptions.SyntacticException;
 import com.mauriciotogneri.jan.kernel.Function;
 import com.mauriciotogneri.jan.kernel.Program;
 

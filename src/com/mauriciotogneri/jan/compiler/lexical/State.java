@@ -3,77 +3,83 @@ package com.mauriciotogneri.jan.compiler.lexical;
 import com.mauriciotogneri.jan.compiler.lexical.Token.Type;
 import com.mauriciotogneri.jan.compiler.lexical.states.InitialState;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public abstract class State
 {
-    private final int line;
-    private final int column;
+    @NotNull
+    private final CursorPosition cursorPosition;
+    @NotNull
     private final StringBuilder lexeme = new StringBuilder();
+    @NotNull
     private final List<Token> tokens;
 
-    protected State(List<Token> tokens, int line, int column)
+    protected State(@NotNull List<Token> tokens, @NotNull CursorPosition cursorPosition)
     {
         this.tokens = tokens;
-        this.line = line;
-        this.column = column;
+        this.cursorPosition = cursorPosition;
     }
 
-    protected int getLine()
+    @NotNull
+    protected CursorPosition getCursorPosition()
     {
-        return line;
+        return cursorPosition;
     }
 
-    protected int getColumn()
-    {
-        return column;
-    }
-
-    protected void addCharacter(Character character)
+    protected void addCharacter(@NotNull Character character)
     {
         lexeme.append(character.toString());
     }
 
-    protected void setLexeme(String newLexeme)
+    protected void setLexeme(@NotNull String newLexeme)
     {
         lexeme.setLength(0);
         lexeme.append(newLexeme);
     }
 
+    @NotNull
     protected String getLexeme()
     {
         return lexeme.toString();
     }
 
+    @NotNull
     protected List<Token> getTokens()
     {
         return tokens;
     }
 
-    private void addToken(Type type, Character character, int line, int column)
+    private void addToken(@NotNull Type type, @NotNull Character character, @NotNull CursorPosition cursorPosition)
     {
-        tokens.add(new Token(character.toString(), type, line, column));
+        tokens.add(new Token(type, character.toString(), cursorPosition));
     }
 
-    protected void addToken(Type type)
+    protected void addToken(@NotNull Type type)
     {
-        tokens.add(new Token(getLexeme(), type, line, column));
+        tokens.add(new Token(type, getLexeme(), cursorPosition));
     }
 
-    protected State createToken(Character character, int line, int column)
+    @NotNull
+    protected State createToken(@NotNull Character character, @NotNull CursorPosition cursorPosition)
     {
-        addToken(character.getDelimiterType(), character, line, column);
+        Token.Type delimiterType = character.getDelimiterType(cursorPosition);
+        addToken(delimiterType, character, cursorPosition);
 
-        return new InitialState(tokens, line, column);
+        return new InitialState(tokens, cursorPosition);
     }
 
-    protected State createToken(Character character, Type type, int line, int column)
+    @NotNull
+    protected State createToken(@NotNull Character character, @NotNull Type type, @NotNull CursorPosition cursorPosition)
     {
         addToken(type);
-        addToken(character.getDelimiterType(), character, line, column);
 
-        return new InitialState(tokens, line, column);
+        Token.Type delimiterType = character.getDelimiterType(cursorPosition);
+        addToken(delimiterType, character, cursorPosition);
+
+        return new InitialState(tokens, cursorPosition);
     }
 
-    public abstract State process(Character character, int line, int column);
+    public abstract State process(Character character, CursorPosition cursorPosition);
 }

@@ -1,7 +1,7 @@
 package com.mauriciotogneri.jan.kernel;
 
 import com.mauriciotogneri.jan.compiler.lexical.Token;
-import com.mauriciotogneri.jan.compiler.semantic.SemanticException;
+import com.mauriciotogneri.jan.exceptions.SemanticException;
 
 import java.util.ArrayList;
 import java.util.List;

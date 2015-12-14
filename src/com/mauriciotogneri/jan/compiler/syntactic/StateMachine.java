@@ -1,5 +1,6 @@
 package com.mauriciotogneri.jan.compiler.syntactic;
 
+import com.mauriciotogneri.jan.compiler.lexical.CursorPosition;
 import com.mauriciotogneri.jan.compiler.lexical.Token;
 import com.mauriciotogneri.jan.compiler.lexical.Token.Type;
 import com.mauriciotogneri.jan.compiler.syntactic.states.AnonymousExpressionStartState;
@@ -29,7 +30,7 @@ class StateMachine
     public Function getAnonymousFunction(List<Token> tokens)
     {
         Program program = new Program();
-        Function function = new Function(new Token("", Type.ANONYMOUS_FUNCTION, 1, 1));
+        Function function = new Function(new Token(Type.ANONYMOUS_FUNCTION, "", new CursorPosition(1, 1)));
         Expression expression = new Expression();
 
         State state = new AnonymousExpressionStartState(program, function, expression);

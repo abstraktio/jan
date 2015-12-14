@@ -1,6 +1,7 @@
 package com.mauriciotogneri.jan.compiler.syntactic;
 
 import com.mauriciotogneri.jan.compiler.lexical.Token;
+import com.mauriciotogneri.jan.exceptions.SyntacticException;
 import com.mauriciotogneri.jan.kernel.Function;
 import com.mauriciotogneri.jan.kernel.Program;
 
@@ -32,7 +33,7 @@ public abstract class State
 
         if (containsFunction(function))
         {
-            throw new SyntacticException("Function '" + function.getName().lexeme + "' already defined", function.getName().line, function.getName().column);
+            throw new SyntacticException("Function '" + function.getName().lexeme + "' already defined", function.getName().cursorPosition.line, function.getName().cursorPosition.column);
         }
 
         program.addFunction(function);

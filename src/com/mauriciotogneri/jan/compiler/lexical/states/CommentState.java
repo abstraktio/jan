@@ -1,24 +1,28 @@
 package com.mauriciotogneri.jan.compiler.lexical.states;
 
 import com.mauriciotogneri.jan.compiler.lexical.Character;
+import com.mauriciotogneri.jan.compiler.lexical.CursorPosition;
 import com.mauriciotogneri.jan.compiler.lexical.State;
 import com.mauriciotogneri.jan.compiler.lexical.Token;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class CommentState extends State
 {
-    public CommentState(List<Token> tokens, int line, int column)
+    public CommentState(@NotNull List<Token> tokens, @NotNull CursorPosition cursorPosition)
     {
-        super(tokens, line, column);
+        super(tokens, cursorPosition);
     }
 
     @Override
-    public State process(Character character, int line, int column)
+    @NotNull
+    public State process(@NotNull Character character, @NotNull CursorPosition cursorPosition)
     {
         if (character.isNewLine())
         {
-            return createToken(character, line, column);
+            return createToken(character, cursorPosition);
         }
         else
         {

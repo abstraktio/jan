@@ -2,50 +2,44 @@ package com.mauriciotogneri.jan.compiler.lexical;
 
 import com.mauriciotogneri.jan.compiler.lexical.states.InitialState;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
-class StateMachine
+public class StateMachine
 {
-    private int line = 1;
-    private int column = 0;
+    private CursorPosition cursorPosition = new CursorPosition(1, 0);
 
-    public List<Token> getTokens(char[] characters)
+    @NotNull
+    public List<Token> getTokens(@NotNull char[] characters)
     {
         List<Token> tokens = new ArrayList<>();
-        State state = new InitialState(tokens, line, column);
+        State state = new InitialState(tokens, cursorPosition);
 
         for (char chr : characters)
         {
-            Character character = Character.get(chr);
+            Character character = Character.fromChar(chr, cursorPosition);
 
-            if (character != null)
+            if (character == Character.NEW_LINE)
             {
-                if (character == Character.NEW_LINE)
-                {
-                    line++;
-                    column = 0;
-                }
-
-                if (character == Character.TAB)
-                {
-                    column += 3;
-                }
-
-                if (!character.isNewLine())
-                {
-                    column++;
-                }
-
-                state = state.process(character, line, column);
+                cursorPosition = cursorPosition.newLine();
             }
-            else
+
+            if (character == Character.TAB)
             {
-                throw new LexicalException(chr, line, column);
+                cursorPosition = cursorPosition.tab();
             }
+
+            if (!character.isNewLine())
+            {
+                cursorPosition = cursorPosition.space();
+            }
+
+            state = state.process(character, cursorPosition);
         }
 
-        state.process(Character.NEW_LINE, line, column);
+        state.process(Character.NEW_LINE, cursorPosition);
 
         return tokens;
     }

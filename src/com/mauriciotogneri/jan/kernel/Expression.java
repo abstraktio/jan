@@ -2,7 +2,7 @@ package com.mauriciotogneri.jan.kernel;
 
 import com.mauriciotogneri.jan.compiler.lexical.Token;
 import com.mauriciotogneri.jan.compiler.lexical.Token.Type;
-import com.mauriciotogneri.jan.compiler.semantic.SemanticException;
+import com.mauriciotogneri.jan.exceptions.SemanticException;
 import com.mauriciotogneri.jan.kernel.nodes.FunctionNode;
 import com.mauriciotogneri.jan.kernel.nodes.ListNode;
 import com.mauriciotogneri.jan.kernel.nodes.LiteralNode;

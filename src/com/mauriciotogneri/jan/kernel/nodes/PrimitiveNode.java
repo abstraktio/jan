@@ -13,7 +13,6 @@ import com.mauriciotogneri.jan.kernel.nodes.arithmetic.SubtractNode;
 import com.mauriciotogneri.jan.kernel.nodes.array.IndexNode;
 import com.mauriciotogneri.jan.kernel.nodes.array.LengthNode;
 import com.mauriciotogneri.jan.kernel.nodes.array.RemoveNode;
-import com.mauriciotogneri.jan.kernel.nodes.conditional.IfElseNode;
 import com.mauriciotogneri.jan.kernel.nodes.conditional.IfNode;
 import com.mauriciotogneri.jan.kernel.nodes.list.ListCloseNode;
 import com.mauriciotogneri.jan.kernel.nodes.list.ListOpenNode;
@@ -107,10 +106,6 @@ public abstract class PrimitiveNode extends OperatorNode
         else if (token.type == Type.CONDITIONAL_IF)
         {
             return new IfNode(token);
-        }
-        else if (token.type == Type.CONDITIONAL_IF_ELSE)
-        {
-            return new IfElseNode(token);
         }
         else if (token.type == Type.ARRAY_INDEX)
         {

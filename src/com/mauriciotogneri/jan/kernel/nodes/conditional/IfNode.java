@@ -30,6 +30,6 @@ public class IfNode extends PrimitiveNode
         }
 
         // TODO: explain more
-        throw new RuntimeException("Cannot perform operation '" + token.lexeme + "' at: [" + token.line + ", " + token.column + "]");
+        throw new RuntimeException("Cannot perform operation '" + token.lexeme + "' at: [" + token.cursorPosition.line + ", " + token.cursorPosition.column + "]");
     }
 }

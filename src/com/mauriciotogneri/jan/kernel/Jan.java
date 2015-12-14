@@ -39,9 +39,9 @@ public class Jan
                     {
                         try
                         {
-                            Function function = compiler.getAnonymousFunction(program, line);
-                            Value result = program.evaluate(function);
-                            programOutput.processResult(result);
+                            //Function function = compiler.getAnonymousFunction(program, line);
+                            //Value result = program.evaluate(function);
+                            //programOutput.processResult(result);
                         }
                         catch (Exception e)
                         {

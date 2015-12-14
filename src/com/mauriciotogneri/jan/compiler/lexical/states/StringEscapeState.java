@@ -1,33 +1,37 @@
 package com.mauriciotogneri.jan.compiler.lexical.states;
 
 import com.mauriciotogneri.jan.compiler.lexical.Character;
-import com.mauriciotogneri.jan.compiler.lexical.LexicalException;
+import com.mauriciotogneri.jan.compiler.lexical.CursorPosition;
 import com.mauriciotogneri.jan.compiler.lexical.State;
 import com.mauriciotogneri.jan.compiler.lexical.Token;
+import com.mauriciotogneri.jan.exceptions.LexicalException;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class StringEscapeState extends State
 {
-    public StringEscapeState(List<Token> tokens, String lexeme, int line, int column)
+    public StringEscapeState(@NotNull List<Token> tokens, @NotNull String lexeme, @NotNull CursorPosition cursorPosition)
     {
-        super(tokens, line, column);
+        super(tokens, cursorPosition);
 
         setLexeme(lexeme);
     }
 
     @Override
-    public State process(Character character, int line, int column)
+    @NotNull
+    public State process(@NotNull Character character, @NotNull CursorPosition cursorPosition)
     {
-        if ((character == Character.NEW_LINE) || (character == Character.CARRIAGE_RETURN))
+        if (character.isNewLine())
         {
-            throw new LexicalException(character, line, column);
+            throw new LexicalException(character, cursorPosition);
         }
         else
         {
             addCharacter(character);
 
-            return new StringState(getTokens(), getLexeme(), line, column);
+            return new StringState(getTokens(), getLexeme(), cursorPosition);
         }
     }
 }

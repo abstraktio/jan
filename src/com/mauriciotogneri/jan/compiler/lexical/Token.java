@@ -1,11 +1,15 @@
 package com.mauriciotogneri.jan.compiler.lexical;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Token
 {
-    public final String lexeme;
+    @NotNull
     public final Type type;
-    public final int line;
-    public final int column;
+    @NotNull
+    public final String lexeme;
+    @NotNull
+    public final CursorPosition cursorPosition;
 
     public enum Type
     {
@@ -48,7 +52,6 @@ public class Token
 
         // conditional
         CONDITIONAL_IF, //
-        CONDITIONAL_IF_ELSE, //
 
         // arrays (lists and strings)
         ARRAY_INDEX, //
@@ -99,8 +102,7 @@ public class Token
 
         private boolean isConditionalToken()
         {
-            return (this == CONDITIONAL_IF) || //
-                    (this == CONDITIONAL_IF_ELSE);
+            return (this == CONDITIONAL_IF);
         }
 
         private boolean isArrayToken()
@@ -137,15 +139,15 @@ public class Token
         }
     }
 
-    public Token(String lexeme, Type type, int line, int column)
+    public Token(@NotNull Type type, @NotNull String lexeme, @NotNull CursorPosition cursorPosition)
     {
         this.lexeme = lexeme;
         this.type = type;
-        this.line = line;
-        this.column = column;
+        this.cursorPosition = cursorPosition;
     }
 
     @Override
+    @NotNull
     public String toString()
     {
         return lexeme;

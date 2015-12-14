@@ -1,8 +1,9 @@
 package com.mauriciotogneri.jan.compiler.lexical;
 
 import com.mauriciotogneri.jan.compiler.lexical.Token.Type;
+import com.mauriciotogneri.jan.exceptions.LexicalException;
 
-import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public enum Character
 {
@@ -116,9 +117,25 @@ public enum Character
     }
 
     @Override
+    @NotNull
     public String toString()
     {
-        return String.valueOf(character);
+        if (this == TAB)
+        {
+            return "\\t";
+        }
+        else if (this == CARRIAGE_RETURN)
+        {
+            return "\\r";
+        }
+        else if (this == NEW_LINE)
+        {
+            return "\\n";
+        }
+        else
+        {
+            return String.valueOf(character);
+        }
     }
 
     public boolean isNewLine()
@@ -131,7 +148,6 @@ public enum Character
         return (this == SPACE) || (this == TAB) || (this == CARRIAGE_RETURN) || (this == NEW_LINE);
     }
 
-    @Contract(pure = true)
     public boolean isDigit()
     {
         return (this == NUMBER_0) || //
@@ -148,7 +164,7 @@ public enum Character
 
     public boolean isLetter()
     {
-        return isLowercaseLetter() || isUppercaseLetter();
+        return (isLowercaseLetter() || isUppercaseLetter());
     }
 
     private boolean isUppercaseLetter()
@@ -211,7 +227,8 @@ public enum Character
                 (this == z);
     }
 
-    public Type getDelimiterType()
+    @NotNull
+    public Type getDelimiterType(@NotNull CursorPosition cursorPosition)
     {
         if (this == SPACE)
         {
@@ -221,17 +238,16 @@ public enum Character
         {
             return Type.TAB;
         }
-        else if (this == NEW_LINE)
+        else if (isNewLine())
         {
             return Type.NEW_LINE;
         }
-        else
-        {
-            return null;
-        }
+
+        throw new LexicalException(character, cursorPosition);
     }
 
-    public Type getOperatorType()
+    @NotNull
+    public Type getOperatorType(@NotNull CursorPosition cursorPosition)
     {
         if (this == STAR)
         {
@@ -293,44 +309,23 @@ public enum Character
         {
             return Type.ANONYMOUS_FUNCTION;
         }
-        else
-        {
-            return null;
-        }
+
+        throw new LexicalException(this, cursorPosition);
     }
 
-    public String getCharacter()
-    {
-        if (this == TAB)
-        {
-            return "\\t";
-        }
-        else if (this == CARRIAGE_RETURN)
-        {
-            return "\\r";
-        }
-        else if (this == NEW_LINE)
-        {
-            return "\\n";
-        }
-        else
-        {
-            return toString();
-        }
-    }
-
-    public static Character get(char chr)
+    @NotNull
+    public static Character fromChar(char value, @NotNull CursorPosition cursorPosition)
     {
         Character[] characters = Character.values();
 
         for (Character character : characters)
         {
-            if (character.character == chr)
+            if (character.character == value)
             {
                 return character;
             }
         }
 
-        return null;
+        throw new LexicalException(value, cursorPosition);
     }
 }
