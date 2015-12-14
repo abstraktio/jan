@@ -1,8 +1,8 @@
 package com.mauriciotogneri.jan.bytecode.kernel;
 
-public interface Tuple2<A, B> extends Constant<Tuple2>
+public abstract class Tuple2<A, B> extends Constant<Tuple2>
 {
-    A _0();
+    public abstract A _0();
 
-    B _1();
+    public abstract B _1();
 }

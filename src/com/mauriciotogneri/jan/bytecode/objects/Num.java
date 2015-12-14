@@ -2,7 +2,7 @@ package com.mauriciotogneri.jan.bytecode.objects;
 
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 
-public class Num implements Constant<Num>
+public class Num extends Constant<Num>
 {
     private final boolean isDecimal;
     private final double value;
@@ -98,18 +98,6 @@ public class Num implements Constant<Num>
     public String toString()
     {
         return (this.isDecimal) ? String.valueOf(value) : String.valueOf((long) value);
-    }
-
-    @Override
-    public Bool isEqual(Constant<Num> object)
-    {
-        return Bool.create(object.call().equals(this));
-    }
-
-    @Override
-    public Bool isNotEqual(Constant<Num> object)
-    {
-        return Bool.create(!object.call().equals(this));
     }
 
     @Override

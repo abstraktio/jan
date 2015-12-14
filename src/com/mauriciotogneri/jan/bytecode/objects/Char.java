@@ -2,7 +2,7 @@ package com.mauriciotogneri.jan.bytecode.objects;
 
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 
-public class Char implements Constant<Char>
+public class Char extends Constant<Char>
 {
     protected final char value;
 
@@ -15,18 +15,6 @@ public class Char implements Constant<Char>
     public String toString()
     {
         return String.valueOf(value);
-    }
-
-    @Override
-    public Bool isEqual(Constant<Char> object)
-    {
-        return Bool.create(object.call().equals(this));
-    }
-
-    @Override
-    public Bool isNotEqual(Constant<Char> object)
-    {
-        return Bool.create(!object.call().equals(this));
     }
 
     @Override

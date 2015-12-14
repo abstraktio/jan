@@ -206,6 +206,12 @@ public class Test
                 }
             };
         }
+
+        @Override
+        public String toString()
+        {
+            return "multi :: a % b % -> %";
+        }
     }
 
     // even :: a % -> ?
@@ -332,7 +338,7 @@ public class Test
         }
     }
 
-    public static class Tuple_NumNum implements Tuple2<Num, Num>
+    public static class Tuple_NumNum extends Tuple2<Num, Num>
     {
         private final Num x;
         private final Num y;
@@ -353,18 +359,6 @@ public class Test
         public Num _1()
         {
             return this.y;
-        }
-
-        @Override
-        public Bool isEqual(Constant<Tuple2> object)
-        {
-            return Bool.create(object.call().equals(this));
-        }
-
-        @Override
-        public Bool isNotEqual(Constant<Tuple2> object)
-        {
-            return Bool.create(!object.call().equals(this));
         }
 
         @Override

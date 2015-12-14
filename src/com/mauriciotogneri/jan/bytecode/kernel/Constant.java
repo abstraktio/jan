@@ -2,13 +2,19 @@ package com.mauriciotogneri.jan.bytecode.kernel;
 
 import com.mauriciotogneri.jan.bytecode.objects.Bool;
 
-public interface Constant<T> extends Function0<T>
+public abstract class Constant<T> implements Function0<T>
 {
-    Bool isEqual(Constant<T> t);
+    public final Bool isEqual(Constant<T> object)
+    {
+        return Bool.create(object.call().equals(call()));
+    }
 
-    Bool isNotEqual(Constant<T> t);
+    public final Bool isNotEqual(Constant<T> object)
+    {
+        return Bool.create(!object.call().equals(call()));
+    }
 
-    String toString();
+    public abstract String toString();
 
-    boolean equals(Object o);
+    public abstract boolean equals(Object o);
 }

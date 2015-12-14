@@ -1,10 +1,10 @@
 package com.mauriciotogneri.jan.bytecode.kernel;
 
-public interface Tuple3<A, B, C> extends Constant<Tuple3>
+public abstract class Tuple3<A, B, C> extends Constant<Tuple3>
 {
-    A _0();
+    public abstract A _0();
 
-    B _1();
+    public abstract B _1();
 
-    C _2();
+    public abstract C _2();
 }

@@ -3,7 +3,7 @@ package com.mauriciotogneri.jan.bytecode.objects;
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 import com.mauriciotogneri.jan.bytecode.kernel.Function0;
 
-public class Array<T> implements Constant<Array<T>>
+public class Array<T> extends Constant<Array<T>>
 {
     private final Object[] data;
 
@@ -96,15 +96,32 @@ public class Array<T> implements Constant<Array<T>>
     }
 
     @Override
-    public Bool isEqual(Constant<Array<T>> object)
+    public String toString()
     {
-        return Bool.create(object.call().equals(this));
-    }
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
 
-    @Override
-    public Bool isNotEqual(Constant<Array<T>> object)
-    {
-        return Bool.create(!object.call().equals(this));
+        for (Object object : data)
+        {
+            if (builder.length() != 1)
+            {
+                builder.append(", ");
+            }
+
+            if (object instanceof Function0)
+            {
+                Function0 constant = (Function0) object;
+                builder.append(constant.call());
+            }
+            else
+            {
+                builder.append(object);
+            }
+        }
+
+        builder.append("]");
+
+        return builder.toString();
     }
 
     @Override
@@ -139,35 +156,6 @@ public class Array<T> implements Constant<Array<T>>
         }
 
         return false;
-    }
-
-    @Override
-    public String toString()
-    {
-        StringBuilder builder = new StringBuilder();
-        builder.append("[");
-
-        for (Object object : data)
-        {
-            if (builder.length() != 1)
-            {
-                builder.append(", ");
-            }
-
-            if (object instanceof Function0)
-            {
-                Function0 constant = (Function0) object;
-                builder.append(constant.call());
-            }
-            else
-            {
-                builder.append(object);
-            }
-        }
-
-        builder.append("]");
-
-        return builder.toString();
     }
 
     public static <T> Array<T> create(T... data)

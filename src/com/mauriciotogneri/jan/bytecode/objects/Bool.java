@@ -2,7 +2,7 @@ package com.mauriciotogneri.jan.bytecode.objects;
 
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 
-public class Bool implements Constant<Bool>
+public class Bool extends Constant<Bool>
 {
     private final boolean value;
 
@@ -38,18 +38,6 @@ public class Bool implements Constant<Bool>
     public String toString()
     {
         return String.valueOf(value);
-    }
-
-    @Override
-    public Bool isEqual(Constant<Bool> object)
-    {
-        return Bool.create(object.call().equals(this));
-    }
-
-    @Override
-    public Bool isNotEqual(Constant<Bool> object)
-    {
-        return Bool.create(!object.call().equals(this));
     }
 
     @Override
