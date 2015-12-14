@@ -4,8 +4,8 @@ import com.mauriciotogneri.jan.kernel.Program;
 
 public class SemanticAnalyzer
 {
-	public void analyze(Program program)
-	{
-		program.analyzeTree();
-	}
+    public void analyze(Program program)
+    {
+        program.analyzeTree();
+    }
 }

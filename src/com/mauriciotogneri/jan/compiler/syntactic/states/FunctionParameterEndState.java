@@ -9,29 +9,29 @@ import com.mauriciotogneri.jan.kernel.Program;
 
 public class FunctionParameterEndState extends State
 {
-	private final Function function;
-	
-	public FunctionParameterEndState(Program program, Function function)
-	{
-		super(program);
-		
-		this.function = function;
-	}
-	
-	@Override
-	public State process(Token token)
-	{
-		if (token.type.isSeparator())
-		{
-			return new FunctionParameterStartState(getProgram(), function);
-		}
-		else if (token.type == Type.NEW_LINE)
-		{
-			return new FunctionDefinedState(getProgram(), function);
-		}
-		else
-		{
-			throw new SyntacticException(token);
-		}
-	}
+    private final Function function;
+
+    public FunctionParameterEndState(Program program, Function function)
+    {
+        super(program);
+
+        this.function = function;
+    }
+
+    @Override
+    public State process(Token token)
+    {
+        if (token.type.isSeparator())
+        {
+            return new FunctionParameterStartState(getProgram(), function);
+        }
+        else if (token.type == Type.NEW_LINE)
+        {
+            return new FunctionDefinedState(getProgram(), function);
+        }
+        else
+        {
+            throw new SyntacticException(token);
+        }
+    }
 }

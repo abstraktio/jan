@@ -10,27 +10,27 @@ import java.util.List;
 
 public class IfState extends State
 {
-	public IfState(List<Token> tokens, int line, int column)
-	{
-		super(tokens, line, column);
-		
-		addCharacter(Character.QUESTION);
-	}
-	
-	@Override
-	public State process(Character character, int line, int column)
-	{
-		if (character == Character.QUESTION)
-		{
-			return new IfElseState(getTokens(), line, column);
-		}
-		else if (character.isDelimiter())
-		{
-			return createToken(character, Type.CONDITIONAL_IF, line, column);
-		}
-		else
-		{
-			throw new LexicalException(character, line, column);
-		}
-	}
+    public IfState(List<Token> tokens, int line, int column)
+    {
+        super(tokens, line, column);
+
+        addCharacter(Character.QUESTION);
+    }
+
+    @Override
+    public State process(Character character, int line, int column)
+    {
+        if (character == Character.QUESTION)
+        {
+            return new IfElseState(getTokens(), line, column);
+        }
+        else if (character.isDelimiter())
+        {
+            return createToken(character, Type.CONDITIONAL_IF, line, column);
+        }
+        else
+        {
+            throw new LexicalException(character, line, column);
+        }
+    }
 }

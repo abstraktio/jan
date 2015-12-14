@@ -10,30 +10,30 @@ import java.util.List;
 
 public class LengthNode extends PrimitiveNode
 {
-	public LengthNode(Token token)
-	{
-		super(token, 1);
-	}
-	
-	@Override
-	public Value evaluate(Context context)
-	{
-		Value operand = get(0, context);
-		
-		if (operand.isList())
-		{
-			List<Value> value = operand.getList();
-			
-			return Value.asNumber(BigDecimal.valueOf(value.size()));
-		}
-		else if (operand.isString())
-		{
-			String value = operand.getString();
-			
-			return Value.asNumber(BigDecimal.valueOf(value.length()));
-		}
-		
-		// TODO: explain more
-		throw new RuntimeException("Cannot perform operation '" + token.lexeme + "' at: [" + token.line + ", " + token.column + "]");
-	}
+    public LengthNode(Token token)
+    {
+        super(token, 1);
+    }
+
+    @Override
+    public Value evaluate(Context context)
+    {
+        Value operand = get(0, context);
+
+        if (operand.isList())
+        {
+            List<Value> value = operand.getList();
+
+            return Value.asNumber(BigDecimal.valueOf(value.size()));
+        }
+        else if (operand.isString())
+        {
+            String value = operand.getString();
+
+            return Value.asNumber(BigDecimal.valueOf(value.length()));
+        }
+
+        // TODO: explain more
+        throw new RuntimeException("Cannot perform operation '" + token.lexeme + "' at: [" + token.line + ", " + token.column + "]");
+    }
 }

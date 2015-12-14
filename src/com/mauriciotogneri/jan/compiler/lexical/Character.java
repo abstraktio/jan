@@ -2,6 +2,8 @@ package com.mauriciotogneri.jan.compiler.lexical;
 
 import com.mauriciotogneri.jan.compiler.lexical.Token.Type;
 
+import org.jetbrains.annotations.Contract;
+
 public enum Character
 {
     TAB('\t'), // 9
@@ -129,6 +131,7 @@ public enum Character
         return (this == SPACE) || (this == TAB) || (this == CARRIAGE_RETURN) || (this == NEW_LINE);
     }
 
+    @Contract(pure = true)
     public boolean isDigit()
     {
         return (this == NUMBER_0) || //

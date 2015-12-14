@@ -7,21 +7,21 @@ import com.mauriciotogneri.jan.kernel.Program;
 
 public class ImportState extends State
 {
-	public ImportState(Program program)
-	{
-		super(program);
-	}
-	
-	@Override
-	public State process(Token token)
-	{
-		if (token.type.isSeparator())
-		{
-			return new ImportStartState(getProgram());
-		}
-		else
-		{
-			throw new SyntacticException(token);
-		}
-	}
+    public ImportState(Program program)
+    {
+        super(program);
+    }
+
+    @Override
+    public State process(Token token)
+    {
+        if (token.type.isSeparator())
+        {
+            return new ImportStartState(getProgram());
+        }
+        else
+        {
+            throw new SyntacticException(token);
+        }
+    }
 }

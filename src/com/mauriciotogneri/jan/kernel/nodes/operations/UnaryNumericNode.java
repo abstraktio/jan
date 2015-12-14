@@ -9,26 +9,26 @@ import java.math.BigDecimal;
 
 public abstract class UnaryNumericNode extends PrimitiveNode
 {
-	protected UnaryNumericNode(Token token)
-	{
-		super(token, 1);
-	}
-	
-	@Override
-	public Value evaluate(Context context)
-	{
-		Value operand = get(0, context);
-		
-		if (operand.isNumber())
-		{
-			BigDecimal value = operand.getNumber();
-			
-			return evaluate(value);
-		}
-		
-		// TODO: explain more
-		throw new RuntimeException("Cannot perform operation '" + token.lexeme + "' at: [" + token.line + ", " + token.column + "]");
-	}
-	
-	protected abstract Value evaluate(BigDecimal operand);
+    protected UnaryNumericNode(Token token)
+    {
+        super(token, 1);
+    }
+
+    @Override
+    public Value evaluate(Context context)
+    {
+        Value operand = get(0, context);
+
+        if (operand.isNumber())
+        {
+            BigDecimal value = operand.getNumber();
+
+            return evaluate(value);
+        }
+
+        // TODO: explain more
+        throw new RuntimeException("Cannot perform operation '" + token.lexeme + "' at: [" + token.line + ", " + token.column + "]");
+    }
+
+    protected abstract Value evaluate(BigDecimal operand);
 }

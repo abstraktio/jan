@@ -6,14 +6,14 @@ import com.mauriciotogneri.jan.kernel.nodes.operations.BinaryBooleanNode;
 
 public class AndNode extends BinaryBooleanNode
 {
-	public AndNode(Token token)
-	{
-		super(token);
-	}
-	
-	@Override
-	protected Value evaluate(Boolean operand1, Boolean operand2)
-	{
-		return Value.asBoolean(operand1 && operand2);
-	}
+    public AndNode(Token token)
+    {
+        super(token);
+    }
+
+    @Override
+    protected Value evaluate(Boolean operand1, Boolean operand2)
+    {
+        return Value.asBoolean(operand1 && operand2);
+    }
 }

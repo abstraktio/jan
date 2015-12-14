@@ -6,14 +6,14 @@ import com.mauriciotogneri.jan.kernel.nodes.operations.UnaryBooleanNode;
 
 public class NegationNode extends UnaryBooleanNode
 {
-	public NegationNode(Token token)
-	{
-		super(token);
-	}
-	
-	@Override
-	protected Value evaluate(Boolean operand)
-	{
-		return Value.asBoolean(!operand);
-	}
+    public NegationNode(Token token)
+    {
+        super(token);
+    }
+
+    @Override
+    protected Value evaluate(Boolean operand)
+    {
+        return Value.asBoolean(!operand);
+    }
 }

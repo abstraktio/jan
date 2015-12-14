@@ -215,7 +215,7 @@ public class Runtime
                     result.add($clone(current));
                 }
 
-                return (T)result;
+                return (T) result;
             }
             else
             {

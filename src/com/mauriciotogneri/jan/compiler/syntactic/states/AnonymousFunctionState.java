@@ -9,25 +9,25 @@ import com.mauriciotogneri.jan.kernel.Program;
 
 public class AnonymousFunctionState extends State
 {
-	private final Function function;
-	
-	public AnonymousFunctionState(Program program, Function function)
-	{
-		super(program);
-		
-		this.function = function;
-	}
-	
-	@Override
-	public State process(Token token)
-	{
-		if (token.type.isSeparator())
-		{
-			return new AnonymousExpressionStartState(getProgram(), function, new Expression());
-		}
-		else
-		{
-			throw new SyntacticException(token);
-		}
-	}
+    private final Function function;
+
+    public AnonymousFunctionState(Program program, Function function)
+    {
+        super(program);
+
+        this.function = function;
+    }
+
+    @Override
+    public State process(Token token)
+    {
+        if (token.type.isSeparator())
+        {
+            return new AnonymousExpressionStartState(getProgram(), function, new Expression());
+        }
+        else
+        {
+            throw new SyntacticException(token);
+        }
+    }
 }
