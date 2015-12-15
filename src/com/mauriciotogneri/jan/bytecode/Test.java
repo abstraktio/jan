@@ -17,6 +17,7 @@ import com.mauriciotogneri.jan.bytecode.objects.Array;
 import com.mauriciotogneri.jan.bytecode.objects.Bool;
 import com.mauriciotogneri.jan.bytecode.objects.Num;
 
+// TODO: make all classes, parameters and variables final
 public class Test
 {
     // factorial :: n % -> %

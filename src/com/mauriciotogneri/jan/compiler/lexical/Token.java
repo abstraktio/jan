@@ -30,8 +30,8 @@ public class Token
         BOOLEAN, //
 
         // arithmetic
-        ARITHMETIC_ADD, //
-        ARITHMETIC_SUBTRACT, //
+        ARITHMETIC_ADDITION, //
+        ARITHMETIC_SUBTRACTION, //
         ARITHMETIC_MULTIPLICATION, //
         ARITHMETIC_DIVISION, //
         ARITHMETIC_POWER, //
@@ -77,8 +77,8 @@ public class Token
 
         private boolean isArithmeticToken()
         {
-            return (this == ARITHMETIC_ADD) || //
-                    (this == ARITHMETIC_SUBTRACT) || //
+            return (this == ARITHMETIC_ADDITION) || //
+                    (this == ARITHMETIC_SUBTRACTION) || //
                     (this == ARITHMETIC_MULTIPLICATION) || //
                     (this == ARITHMETIC_DIVISION) || //
                     (this == ARITHMETIC_POWER) || //

@@ -2,7 +2,7 @@ package com.mauriciotogneri.jan.bytecode.objects;
 
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 
-public class Num extends Constant<Num>
+public final class Num extends Constant<Num>
 {
     private final boolean isDecimal;
     private final double value;

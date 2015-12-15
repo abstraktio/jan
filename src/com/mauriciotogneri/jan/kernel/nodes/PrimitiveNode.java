@@ -35,11 +35,11 @@ public abstract class PrimitiveNode extends OperatorNode
 
     public static PrimitiveNode get(Token token)
     {
-        if (token.type == Type.ARITHMETIC_ADD)
+        if (token.type == Type.ARITHMETIC_ADDITION)
         {
             return new AddNode(token);
         }
-        else if (token.type == Type.ARITHMETIC_SUBTRACT)
+        else if (token.type == Type.ARITHMETIC_SUBTRACTION)
         {
             return new SubtractNode(token);
         }

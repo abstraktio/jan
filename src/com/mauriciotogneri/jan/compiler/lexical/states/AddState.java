@@ -30,7 +30,7 @@ public class AddState extends State
         }
         else if (character.isDelimiter())
         {
-            return createToken(character, Type.ARITHMETIC_ADD, cursorPosition);
+            return createToken(character, Type.ARITHMETIC_ADDITION, cursorPosition);
         }
         else
         {

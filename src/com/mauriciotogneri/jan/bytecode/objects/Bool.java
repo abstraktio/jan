@@ -2,7 +2,7 @@ package com.mauriciotogneri.jan.bytecode.objects;
 
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 
-public class Bool extends Constant<Bool>
+public final class Bool extends Constant<Bool>
 {
     private final boolean value;
 

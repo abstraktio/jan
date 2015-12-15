@@ -12,6 +12,12 @@ import java.util.List;
 public class LexicalAnalyzer
 {
     @NotNull
+    public List<Token> getTokens(@NotNull File file)
+    {
+        return getTokens(file.getAbsolutePath());
+    }
+
+    @NotNull
     public List<Token> getTokens(@NotNull String sourcePath)
     {
         char[] characters = getCharacters(sourcePath);

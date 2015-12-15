@@ -2,7 +2,7 @@ package com.mauriciotogneri.jan.bytecode.objects;
 
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 
-public class Char extends Constant<Char>
+public final class Char extends Constant<Char>
 {
     protected final char value;
 

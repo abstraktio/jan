@@ -36,7 +36,7 @@ public class SubtractState extends State
         }
         else if (character.isDelimiter())
         {
-            return createToken(character, Type.ARITHMETIC_SUBTRACT, cursorPosition);
+            return createToken(character, Type.ARITHMETIC_SUBTRACTION, cursorPosition);
         }
         else
         {

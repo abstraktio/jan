@@ -3,7 +3,7 @@ package com.mauriciotogneri.jan.bytecode.objects;
 import com.mauriciotogneri.jan.bytecode.kernel.Constant;
 import com.mauriciotogneri.jan.bytecode.kernel.Function0;
 
-public class Array<T> extends Constant<Array<T>>
+public final class Array<T> extends Constant<Array<T>>
 {
     private final Object[] data;
 
