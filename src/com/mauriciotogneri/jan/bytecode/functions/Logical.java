@@ -1,5 +1,6 @@
 package com.mauriciotogneri.jan.bytecode.functions;
 
+import com.mauriciotogneri.jan.bytecode.kernel.Function0;
 import com.mauriciotogneri.jan.bytecode.kernel.Function1;
 import com.mauriciotogneri.jan.bytecode.kernel.Function2;
 import com.mauriciotogneri.jan.bytecode.objects.Bool;
@@ -13,19 +14,26 @@ public class Logical
     // & :: a ? b ? -> ?
     // & a b
 
-    public static class $and implements Function2<Bool, Bool, Bool>
+    public static class $and implements Function2<Function0<Bool>, Function0<Bool>, Function0<Bool>>
     {
         public static final $and instance = new $and();
 
         @Override
-        public Function1<Bool, Bool> call(final Bool a)
+        public Function1<Function0<Bool>, Function0<Bool>> call(final Function0<Bool> a)
         {
-            return new Function1<Bool, Bool>()
+            return new Function1<Function0<Bool>, Function0<Bool>>()
             {
                 @Override
-                public Bool call(final Bool b)
+                public Function0<Bool> call(final Function0<Bool> b)
                 {
-                    return a.and(b);
+                    return new Function0<Bool>()
+                    {
+                        @Override
+                        public Bool call()
+                        {
+                            return a.call().and(b.call());
+                        }
+                    };
                 }
             };
         }
@@ -34,19 +42,26 @@ public class Logical
     // | :: a ? b ? -> ?
     // | a b
 
-    public static class $or implements Function2<Bool, Bool, Bool>
+    public static class $or implements Function2<Function0<Bool>, Function0<Bool>, Function0<Bool>>
     {
         public static final $or instance = new $or();
 
         @Override
-        public Function1<Bool, Bool> call(final Bool a)
+        public Function1<Function0<Bool>, Function0<Bool>> call(final Function0<Bool> a)
         {
-            return new Function1<Bool, Bool>()
+            return new Function1<Function0<Bool>, Function0<Bool>>()
             {
                 @Override
-                public Bool call(final Bool b)
+                public Function0<Bool> call(final Function0<Bool> b)
                 {
-                    return a.or(b);
+                    return new Function0<Bool>()
+                    {
+                        @Override
+                        public Bool call()
+                        {
+                            return a.call().or(b.call());
+                        }
+                    };
                 }
             };
         }
@@ -55,14 +70,21 @@ public class Logical
     // ! :: a ? -> ?
     // ! a
 
-    public static class $neg implements Function1<Bool, Bool>
+    public static class $neg implements Function1<Function0<Bool>, Function0<Bool>>
     {
         public static final $neg instance = new $neg();
 
         @Override
-        public Bool call(final Bool a)
+        public Function0<Bool> call(final Function0<Bool> a)
         {
-            return a.neg();
+            return new Function0<Bool>()
+            {
+                @Override
+                public Bool call()
+                {
+                    return a.call().neg();
+                }
+            };
         }
     }
 }

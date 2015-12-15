@@ -1,8 +1,9 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
-import com.mauriciotogneri.jan.bytecode.kernel.Constant;
+import com.mauriciotogneri.jan.bytecode.kernel.Eq;
+import com.mauriciotogneri.jan.bytecode.kernel.Function0;
 
-public final class Char extends Constant<Char>
+public final class Char implements Function0<Char>, Eq
 {
     protected final char value;
 
@@ -29,9 +30,9 @@ public final class Char extends Constant<Char>
             return false;
         }
 
-        Char aChar = (Char) o;
+        Char other = (Char) o;
 
-        return (value == aChar.value);
+        return (value == other.value);
 
     }
 

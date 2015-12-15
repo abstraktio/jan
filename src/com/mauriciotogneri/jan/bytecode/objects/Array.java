@@ -1,9 +1,10 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
-import com.mauriciotogneri.jan.bytecode.kernel.Constant;
+import com.mauriciotogneri.jan.bytecode.functions.Comparison;
+import com.mauriciotogneri.jan.bytecode.kernel.Eq;
 import com.mauriciotogneri.jan.bytecode.kernel.Function0;
 
-public final class Array<T> extends Constant<Array<T>>
+public final class Array<T> implements Function0<Array<T>>, Eq
 {
     private final Object[] data;
 
@@ -13,7 +14,7 @@ public final class Array<T> extends Constant<Array<T>>
     }
 
     @SuppressWarnings("unchecked")
-    private Array(T... data)
+    public Array(T... data)
     {
         this.data = clone(data);
     }
@@ -137,16 +138,13 @@ public final class Array<T> extends Constant<Array<T>>
             return false;
         }
 
-        Array<T> array = (Array<T>) o;
+        Array<T> other = (Array<T>) o;
 
-        if (array.data.length == this.data.length)
+        if (other.data.length == this.data.length)
         {
             for (int i = 0; i < data.length; i++)
             {
-                T e1 = (T) data[i];
-                T e2 = (T) array.data[i];
-
-                if (!e1.equals(e2))
+                if (!Comparison.equals(data[i], other.data[i]))
                 {
                     return false;
                 }
@@ -156,11 +154,6 @@ public final class Array<T> extends Constant<Array<T>>
         }
 
         return false;
-    }
-
-    public static <T> Array<T> create(T... data)
-    {
-        return new Array<>(data);
     }
 
     @Override

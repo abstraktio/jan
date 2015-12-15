@@ -1,6 +1,7 @@
 package com.mauriciotogneri.jan.bytecode.functions;
 
-import com.mauriciotogneri.jan.bytecode.kernel.Constant;
+import com.mauriciotogneri.jan.bytecode.kernel.Eq;
+import com.mauriciotogneri.jan.bytecode.kernel.Function0;
 import com.mauriciotogneri.jan.bytecode.kernel.Function1;
 import com.mauriciotogneri.jan.bytecode.kernel.Function2;
 import com.mauriciotogneri.jan.bytecode.objects.Bool;
@@ -13,24 +14,44 @@ public class Comparison
     {
     }
 
+    public static boolean equals(Object a, Object b)
+    {
+        if ((a instanceof Function0) && (b instanceof Function0))
+        {
+            Object aValue = ((Function0) a).call();
+            Object bValue = ((Function0) b).call();
+
+            return (aValue instanceof Eq) && (bValue instanceof Eq) && aValue.equals(bValue);
+        }
+
+        return false;
+    }
+
     // = :: a $A b $A -> ?
     // = a b
 
-    public static class $equals<A> implements Function2<Constant<A>, Constant<A>, Bool>
+    public static class $equals<A extends Function0> implements Function2<A, A, Function0<Bool>>
     {
-        public static final $equals<Num> $equalsNum = new $equals<>();
-        public static final $equals<Bool> $equalsBool = new $equals<>();
-        public static final $equals<Char> $equalsChar = new $equals<>();
+        public static final $equals<Function0<Num>> $equalsNum = new $equals<>();
+        public static final $equals<Function0<Bool>> $equalsBool = new $equals<>();
+        public static final $equals<Function0<Char>> $equalsChar = new $equals<>();
 
         @Override
-        public Function1<Constant<A>, Bool> call(final Constant<A> a)
+        public Function1<A, Function0<Bool>> call(final A a)
         {
-            return new Function1<Constant<A>, Bool>()
+            return new Function1<A, Function0<Bool>>()
             {
                 @Override
-                public Bool call(final Constant<A> b)
+                public Function0<Bool> call(final A b)
                 {
-                    return a.isEqual(b);
+                    return new Function0<Bool>()
+                    {
+                        @Override
+                        public Bool call()
+                        {
+                            return Bool.create(Comparison.equals(a, b));
+                        }
+                    };
                 }
             };
         }
@@ -39,21 +60,28 @@ public class Comparison
     // != :: a $A b $A -> ?
     // != a b
 
-    public static class $notEquals<A> implements Function2<Constant<A>, Constant<A>, Bool>
+    public static class $notEquals<A extends Function0> implements Function2<A, A, Function0<Bool>>
     {
-        public static final $notEquals<Num> $notEqualsNum = new $notEquals<>();
-        public static final $notEquals<Bool> $botEqualsBool = new $notEquals<>();
-        public static final $notEquals<Char> $notEqualsChar = new $notEquals<>();
+        public static final $notEquals<Function0<Num>> $notEqualsNum = new $notEquals<>();
+        public static final $notEquals<Function0<Bool>> $notEqualsBool = new $notEquals<>();
+        public static final $notEquals<Function0<Char>> $notEqualsChar = new $notEquals<>();
 
         @Override
-        public Function1<Constant<A>, Bool> call(final Constant<A> a)
+        public Function1<A, Function0<Bool>> call(final A a)
         {
-            return new Function1<Constant<A>, Bool>()
+            return new Function1<A, Function0<Bool>>()
             {
                 @Override
-                public Bool call(final Constant<A> b)
+                public Function0<Bool> call(final A b)
                 {
-                    return a.isNotEqual(b);
+                    return new Function0<Bool>()
+                    {
+                        @Override
+                        public Bool call()
+                        {
+                            return Bool.create(!Comparison.equals(a, b));
+                        }
+                    };
                 }
             };
         }
@@ -62,19 +90,26 @@ public class Comparison
     // < :: a % b % -> ?
     // < a b
 
-    public static class $less implements Function2<Num, Num, Bool>
+    public static class $less implements Function2<Function0<Num>, Function0<Num>, Function0<Bool>>
     {
         public static final $less instance = new $less();
 
         @Override
-        public Function1<Num, Bool> call(final Num a)
+        public Function1<Function0<Num>, Function0<Bool>> call(final Function0<Num> a)
         {
-            return new Function1<Num, Bool>()
+            return new Function1<Function0<Num>, Function0<Bool>>()
             {
                 @Override
-                public Bool call(final Num b)
+                public Function0<Bool> call(final Function0<Num> b)
                 {
-                    return a.less(b);
+                    return new Function0<Bool>()
+                    {
+                        @Override
+                        public Bool call()
+                        {
+                            return a.call().less(b.call());
+                        }
+                    };
                 }
             };
         }
@@ -83,19 +118,26 @@ public class Comparison
     // <= :: a % b % -> ?
     // <= a b
 
-    public static class $lessOrEqual implements Function2<Num, Num, Bool>
+    public static class $lessOrEqual implements Function2<Function0<Num>, Function0<Num>, Function0<Bool>>
     {
         public static final $lessOrEqual instance = new $lessOrEqual();
 
         @Override
-        public Function1<Num, Bool> call(final Num a)
+        public Function1<Function0<Num>, Function0<Bool>> call(final Function0<Num> a)
         {
-            return new Function1<Num, Bool>()
+            return new Function1<Function0<Num>, Function0<Bool>>()
             {
                 @Override
-                public Bool call(final Num b)
+                public Function0<Bool> call(final Function0<Num> b)
                 {
-                    return a.lessOrEqual(b);
+                    return new Function0<Bool>()
+                    {
+                        @Override
+                        public Bool call()
+                        {
+                            return a.call().lessOrEqual(b.call());
+                        }
+                    };
                 }
             };
         }
@@ -104,19 +146,26 @@ public class Comparison
     // > :: a % b % -> ?
     // > a b
 
-    public static class $greater implements Function2<Num, Num, Bool>
+    public static class $greater implements Function2<Function0<Num>, Function0<Num>, Function0<Bool>>
     {
         public static final $greater instance = new $greater();
 
         @Override
-        public Function1<Num, Bool> call(final Num a)
+        public Function1<Function0<Num>, Function0<Bool>> call(final Function0<Num> a)
         {
-            return new Function1<Num, Bool>()
+            return new Function1<Function0<Num>, Function0<Bool>>()
             {
                 @Override
-                public Bool call(final Num b)
+                public Function0<Bool> call(final Function0<Num> b)
                 {
-                    return a.greater(b);
+                    return new Function0<Bool>()
+                    {
+                        @Override
+                        public Bool call()
+                        {
+                            return a.call().greater(b.call());
+                        }
+                    };
                 }
             };
         }
@@ -125,19 +174,26 @@ public class Comparison
     // >= :: a % b % -> ?
     // >= a b
 
-    public static class $greaterOrEqual implements Function2<Num, Num, Bool>
+    public static class $greaterOrEqual implements Function2<Function0<Num>, Function0<Num>, Function0<Bool>>
     {
         public static final $greaterOrEqual instance = new $greaterOrEqual();
 
         @Override
-        public Function1<Num, Bool> call(final Num a)
+        public Function1<Function0<Num>, Function0<Bool>> call(final Function0<Num> a)
         {
-            return new Function1<Num, Bool>()
+            return new Function1<Function0<Num>, Function0<Bool>>()
             {
                 @Override
-                public Bool call(final Num b)
+                public Function0<Bool> call(final Function0<Num> b)
                 {
-                    return a.greaterOrEqual(b);
+                    return new Function0<Bool>()
+                    {
+                        @Override
+                        public Bool call()
+                        {
+                            return a.call().greaterOrEqual(b.call());
+                        }
+                    };
                 }
             };
         }

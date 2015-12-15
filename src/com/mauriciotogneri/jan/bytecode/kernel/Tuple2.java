@@ -1,6 +1,6 @@
 package com.mauriciotogneri.jan.bytecode.kernel;
 
-public abstract class Tuple2<A, B> extends Constant<Tuple2>
+public abstract class Tuple2<A, B> implements Function0<Tuple2>
 {
     public abstract A _0();
 

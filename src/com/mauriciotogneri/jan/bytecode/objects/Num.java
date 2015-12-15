@@ -1,8 +1,9 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
-import com.mauriciotogneri.jan.bytecode.kernel.Constant;
+import com.mauriciotogneri.jan.bytecode.kernel.Eq;
+import com.mauriciotogneri.jan.bytecode.kernel.Function0;
 
-public final class Num extends Constant<Num>
+public final class Num implements Function0<Num>, Eq
 {
     private final boolean isDecimal;
     private final double value;
@@ -112,9 +113,9 @@ public final class Num extends Constant<Num>
             return false;
         }
 
-        Num num = (Num) o;
+        Num other = (Num) o;
 
-        return (Double.compare(num.value, value) == 0);
+        return (Double.compare(other.value, value) == 0);
     }
 
     public static Num create(long value)

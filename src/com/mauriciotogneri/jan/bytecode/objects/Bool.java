@@ -1,8 +1,9 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
-import com.mauriciotogneri.jan.bytecode.kernel.Constant;
+import com.mauriciotogneri.jan.bytecode.kernel.Eq;
+import com.mauriciotogneri.jan.bytecode.kernel.Function0;
 
-public final class Bool extends Constant<Bool>
+public final class Bool implements Function0<Bool>, Eq
 {
     private final boolean value;
 
@@ -52,9 +53,9 @@ public final class Bool extends Constant<Bool>
             return false;
         }
 
-        Bool bool = (Bool) o;
+        Bool other = (Bool) o;
 
-        return (value == bool.value);
+        return (value == other.value);
 
     }
 
