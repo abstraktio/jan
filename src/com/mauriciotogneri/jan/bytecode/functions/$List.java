@@ -1,30 +1,29 @@
 package com.mauriciotogneri.jan.bytecode.functions;
 
-import com.mauriciotogneri.jan.bytecode.kernel.Function1;
-import com.mauriciotogneri.jan.bytecode.kernel.Function2;
-import com.mauriciotogneri.jan.bytecode.objects.Array;
-import com.mauriciotogneri.jan.bytecode.objects.Num;
+import com.mauriciotogneri.jan.bytecode.kernel.$F1;
+import com.mauriciotogneri.jan.bytecode.objects.$Array;
+import com.mauriciotogneri.jan.bytecode.objects.$Num;
 
-public class List
+public class $List
 {
-    private List()
+    private $List()
     {
     }
 
     // @ :: a % b [ $A ] -> $A
     // @ a b
 
-    public static class $get<A> implements Function2<Num, Array<A>, A>
+    public static class $get<A> implements $F1<$Num, $F1<$Array<A>, A>>
     {
         public static final $get instance = new $get();
 
         @Override
-        public Function1<Array<A>, A> call(final Num a)
+        public $F1<$Array<A>, A> call(final $Num a)
         {
-            return new Function1<Array<A>, A>()
+            return new $F1<$Array<A>, A>()
             {
                 @Override
-                public A call(final Array<A> b)
+                public A call(final $Array<A> b)
                 {
                     return b.get(a);
                 }
@@ -35,17 +34,17 @@ public class List
     // ~ :: a % b [ $A ] -> [ $A ]
     // ~ a b
 
-    public static class $remove<A> implements Function2<Num, Array<A>, Array<A>>
+    public static class $remove<A> implements $F1<$Num, $F1<$Array<A>, $Array<A>>>
     {
         public static final $remove instance = new $remove();
 
         @Override
-        public Function1<Array<A>, Array<A>> call(final Num a)
+        public $F1<$Array<A>, $Array<A>> call(final $Num a)
         {
-            return new Function1<Array<A>, Array<A>>()
+            return new $F1<$Array<A>, $Array<A>>()
             {
                 @Override
-                public Array<A> call(final Array<A> b)
+                public $Array<A> call(final $Array<A> b)
                 {
                     return b.remove(a);
                 }
@@ -56,12 +55,12 @@ public class List
     // # :: a [ $A ] -> %
     // # a
 
-    public static class $length<A> implements Function1<Array<A>, Num>
+    public static class $length<A> implements $F1<$Array<A>, $Num>
     {
         public static final $length instance = new $length();
 
         @Override
-        public Num call(final Array<A> a)
+        public $Num call(final $Array<A> a)
         {
             return a.length();
         }
@@ -70,17 +69,17 @@ public class List
     // +> :: a $A b [ $A ] -> [ $A ]
     // +> a b
 
-    public static class $addBefore<A> implements Function2<A, Array<A>, Array<A>>
+    public static class $addBefore<A> implements $F1<A, $F1<$Array<A>, $Array<A>>>
     {
         public static final $addBefore instance = new $addBefore();
 
         @Override
-        public Function1<Array<A>, Array<A>> call(final A a)
+        public $F1<$Array<A>, $Array<A>> call(final A a)
         {
-            return new Function1<Array<A>, Array<A>>()
+            return new $F1<$Array<A>, $Array<A>>()
             {
                 @Override
-                public Array<A> call(final Array<A> b)
+                public $Array<A> call(final $Array<A> b)
                 {
                     return b.addBefore(a);
                 }
@@ -91,17 +90,17 @@ public class List
     // >+ :: a $A b [ $A ] -> [ $A ]
     // >+ a b
 
-    public static class $addAfter<A> implements Function2<A, Array<A>, Array<A>>
+    public static class $addAfter<A> implements $F1<A, $F1<$Array<A>, $Array<A>>>
     {
         public static final $addAfter instance = new $addAfter();
 
         @Override
-        public Function1<Array<A>, Array<A>> call(final A a)
+        public $F1<$Array<A>, $Array<A>> call(final A a)
         {
-            return new Function1<Array<A>, Array<A>>()
+            return new $F1<$Array<A>, $Array<A>>()
             {
                 @Override
-                public Array<A> call(final Array<A> b)
+                public $Array<A> call(final $Array<A> b)
                 {
                     return b.addAfter(a);
                 }

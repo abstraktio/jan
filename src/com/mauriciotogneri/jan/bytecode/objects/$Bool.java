@@ -1,33 +1,33 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
-import com.mauriciotogneri.jan.bytecode.kernel.Eq;
-import com.mauriciotogneri.jan.bytecode.kernel.Function0;
+import com.mauriciotogneri.jan.bytecode.kernel.$Eq;
+import com.mauriciotogneri.jan.bytecode.kernel.$F0;
 
-public final class Bool implements Function0<Bool>, Eq
+public final class $Bool implements $F0<$Bool>, $Eq
 {
     private final boolean value;
 
-    public static final Bool TRUE = new Bool(true);
-    public static final Bool FALSE = new Bool(false);
+    public static final $Bool TRUE = new $Bool(true);
+    public static final $Bool FALSE = new $Bool(false);
 
-    private Bool(boolean value)
+    private $Bool(boolean value)
     {
         this.value = value;
     }
 
-    public Bool and(Bool bool)
+    public $Bool and($Bool bool)
     {
-        return Bool.create(this.value && bool.value);
+        return $Bool.create(this.value && bool.value);
     }
 
-    public Bool or(Bool bool)
+    public $Bool or($Bool bool)
     {
-        return Bool.create(this.value || bool.value);
+        return $Bool.create(this.value || bool.value);
     }
 
-    public Bool neg()
+    public $Bool neg()
     {
-        return Bool.create(!value);
+        return $Bool.create(!value);
     }
 
     public boolean isTrue()
@@ -53,19 +53,19 @@ public final class Bool implements Function0<Bool>, Eq
             return false;
         }
 
-        Bool other = (Bool) o;
+        $Bool other = ($Bool) o;
 
         return (value == other.value);
 
     }
 
-    public static Bool create(boolean value)
+    public static $Bool create(boolean value)
     {
         return (value) ? TRUE : FALSE;
     }
 
     @Override
-    public Bool call()
+    public $Bool call()
     {
         return this;
     }

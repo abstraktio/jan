@@ -1,35 +1,34 @@
 package com.mauriciotogneri.jan.bytecode.functions;
 
-import com.mauriciotogneri.jan.bytecode.kernel.Function0;
-import com.mauriciotogneri.jan.bytecode.kernel.Function1;
-import com.mauriciotogneri.jan.bytecode.kernel.Function2;
-import com.mauriciotogneri.jan.bytecode.objects.Num;
+import com.mauriciotogneri.jan.bytecode.kernel.$F0;
+import com.mauriciotogneri.jan.bytecode.kernel.$F1;
+import com.mauriciotogneri.jan.bytecode.objects.$Num;
 
-public class Arithmetic
+public class $Arithmetic
 {
-    private Arithmetic()
+    private $Arithmetic()
     {
     }
 
     // + :: a % b % -> %
     // + a b
 
-    public static class $add implements Function2<Function0<Num>, Function0<Num>, Function0<Num>>
+    public static class $add implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
     {
         public static final $add instance = new $add();
 
         @Override
-        public Function1<Function0<Num>, Function0<Num>> call(final Function0<Num> a)
+        public $F1<$F0<$Num>, $F0<$Num>> call(final $F0<$Num> a)
         {
-            return new Function1<Function0<Num>, Function0<Num>>()
+            return new $F1<$F0<$Num>, $F0<$Num>>()
             {
                 @Override
-                public Function0<Num> call(final Function0<Num> b)
+                public $F0<$Num> call(final $F0<$Num> b)
                 {
-                    return new Function0<Num>()
+                    return new $F0<$Num>()
                     {
                         @Override
-                        public Num call()
+                        public $Num call()
                         {
                             return a.call().add(b.call());
                         }
@@ -42,22 +41,22 @@ public class Arithmetic
     // - :: a % b % -> %
     // - a b
 
-    public static class $sub implements Function2<Function0<Num>, Function0<Num>, Function0<Num>>
+    public static class $sub implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
     {
         public static final $sub instance = new $sub();
 
         @Override
-        public Function1<Function0<Num>, Function0<Num>> call(final Function0<Num> a)
+        public $F1<$F0<$Num>, $F0<$Num>> call(final $F0<$Num> a)
         {
-            return new Function1<Function0<Num>, Function0<Num>>()
+            return new $F1<$F0<$Num>, $F0<$Num>>()
             {
                 @Override
-                public Function0<Num> call(final Function0<Num> b)
+                public $F0<$Num> call(final $F0<$Num> b)
                 {
-                    return new Function0<Num>()
+                    return new $F0<$Num>()
                     {
                         @Override
-                        public Num call()
+                        public $Num call()
                         {
                             return a.call().sub(b.call());
                         }
@@ -70,22 +69,22 @@ public class Arithmetic
     // * :: a % b % -> %
     // * a b
 
-    public static class $mul implements Function2<Function0<Num>, Function0<Num>, Function0<Num>>
+    public static class $mul implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
     {
         public static final $mul instance = new $mul();
 
         @Override
-        public Function1<Function0<Num>, Function0<Num>> call(final Function0<Num> a)
+        public $F1<$F0<$Num>, $F0<$Num>> call(final $F0<$Num> a)
         {
-            return new Function1<Function0<Num>, Function0<Num>>()
+            return new $F1<$F0<$Num>, $F0<$Num>>()
             {
                 @Override
-                public Function0<Num> call(final Function0<Num> b)
+                public $F0<$Num> call(final $F0<$Num> b)
                 {
-                    return new Function0<Num>()
+                    return new $F0<$Num>()
                     {
                         @Override
-                        public Num call()
+                        public $Num call()
                         {
                             return a.call().mul(b.call());
                         }
@@ -98,22 +97,22 @@ public class Arithmetic
     // / :: a % b % -> %
     // / a b
 
-    public static class $div implements Function2<Function0<Num>, Function0<Num>, Function0<Num>>
+    public static class $div implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
     {
         public static final $div instance = new $div();
 
         @Override
-        public Function1<Function0<Num>, Function0<Num>> call(final Function0<Num> a)
+        public $F1<$F0<$Num>, $F0<$Num>> call(final $F0<$Num> a)
         {
-            return new Function1<Function0<Num>, Function0<Num>>()
+            return new $F1<$F0<$Num>, $F0<$Num>>()
             {
                 @Override
-                public Function0<Num> call(final Function0<Num> b)
+                public $F0<$Num> call(final $F0<$Num> b)
                 {
-                    return new Function0<Num>()
+                    return new $F0<$Num>()
                     {
                         @Override
-                        public Num call()
+                        public $Num call()
                         {
                             return a.call().div(b.call());
                         }
@@ -126,22 +125,22 @@ public class Arithmetic
     // /% :: a % b % -> %
     // /% a b
 
-    public static class $divf implements Function2<Function0<Num>, Function0<Num>, Function0<Num>>
+    public static class $divf implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
     {
         public static final $divf instance = new $divf();
 
         @Override
-        public Function1<Function0<Num>, Function0<Num>> call(final Function0<Num> a)
+        public $F1<$F0<$Num>, $F0<$Num>> call(final $F0<$Num> a)
         {
-            return new Function1<Function0<Num>, Function0<Num>>()
+            return new $F1<$F0<$Num>, $F0<$Num>>()
             {
                 @Override
-                public Function0<Num> call(final Function0<Num> b)
+                public $F0<$Num> call(final $F0<$Num> b)
                 {
-                    return new Function0<Num>()
+                    return new $F0<$Num>()
                     {
                         @Override
-                        public Num call()
+                        public $Num call()
                         {
                             return a.call().divf(b.call());
                         }
@@ -154,17 +153,17 @@ public class Arithmetic
     // ++ :: a % -> %
     // ++ a
 
-    public static class $inc implements Function1<Function0<Num>, Function0<Num>>
+    public static class $inc implements $F1<$F0<$Num>, $F0<$Num>>
     {
         public static final $inc instance = new $inc();
 
         @Override
-        public Function0<Num> call(final Function0<Num> a)
+        public $F0<$Num> call(final $F0<$Num> a)
         {
-            return new Function0<Num>()
+            return new $F0<$Num>()
             {
                 @Override
-                public Num call()
+                public $Num call()
                 {
                     return a.call().inc();
                 }
@@ -175,17 +174,17 @@ public class Arithmetic
     // -- :: a % -> %
     // -- a
 
-    public static class $dec implements Function1<Function0<Num>, Function0<Num>>
+    public static class $dec implements $F1<$F0<$Num>, $F0<$Num>>
     {
         public static final $dec instance = new $dec();
 
         @Override
-        public Function0<Num> call(final Function0<Num> a)
+        public $F0<$Num> call(final $F0<$Num> a)
         {
-            return new Function0<Num>()
+            return new $F0<$Num>()
             {
                 @Override
-                public Num call()
+                public $Num call()
                 {
                     return a.call().dec();
                 }
@@ -196,22 +195,22 @@ public class Arithmetic
     // ^ :: a % b % -> %
     // ^ a b
 
-    public static class $pow implements Function2<Function0<Num>, Function0<Num>, Function0<Num>>
+    public static class $pow implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
     {
         public static final $pow instance = new $pow();
 
         @Override
-        public Function1<Function0<Num>, Function0<Num>> call(final Function0<Num> a)
+        public $F1<$F0<$Num>, $F0<$Num>> call(final $F0<$Num> a)
         {
-            return new Function1<Function0<Num>, Function0<Num>>()
+            return new $F1<$F0<$Num>, $F0<$Num>>()
             {
                 @Override
-                public Function0<Num> call(final Function0<Num> b)
+                public $F0<$Num> call(final $F0<$Num> b)
                 {
-                    return new Function0<Num>()
+                    return new $F0<$Num>()
                     {
                         @Override
-                        public Num call()
+                        public $Num call()
                         {
                             return a.call().pow(b.call());
                         }
@@ -224,22 +223,22 @@ public class Arithmetic
     // % :: a % b % -> %
     // % a b
 
-    public static class $mod implements Function2<Function0<Num>, Function0<Num>, Function0<Num>>
+    public static class $mod implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
     {
         public static final $mod instance = new $mod();
 
         @Override
-        public Function1<Function0<Num>, Function0<Num>> call(final Function0<Num> a)
+        public $F1<$F0<$Num>, $F0<$Num>> call(final $F0<$Num> a)
         {
-            return new Function1<Function0<Num>, Function0<Num>>()
+            return new $F1<$F0<$Num>, $F0<$Num>>()
             {
                 @Override
-                public Function0<Num> call(final Function0<Num> b)
+                public $F0<$Num> call(final $F0<$Num> b)
                 {
-                    return new Function0<Num>()
+                    return new $F0<$Num>()
                     {
                         @Override
-                        public Num call()
+                        public $Num call()
                         {
                             return a.call().mod(b.call());
                         }

@@ -1,13 +1,13 @@
 package com.mauriciotogneri.jan.bytecode.objects;
 
-import com.mauriciotogneri.jan.bytecode.kernel.Eq;
-import com.mauriciotogneri.jan.bytecode.kernel.Function0;
+import com.mauriciotogneri.jan.bytecode.kernel.$Eq;
+import com.mauriciotogneri.jan.bytecode.kernel.$F0;
 
-public final class Char implements Function0<Char>, Eq
+public final class $Char implements $F0<$Char>, $Eq
 {
     protected final char value;
 
-    private Char(char value)
+    private $Char(char value)
     {
         this.value = value;
     }
@@ -30,19 +30,19 @@ public final class Char implements Function0<Char>, Eq
             return false;
         }
 
-        Char other = (Char) o;
+        $Char other = ($Char) o;
 
         return (value == other.value);
 
     }
 
-    public static Char create(char value)
+    public static $Char create(char value)
     {
-        return new Char(value);
+        return new $Char(value);
     }
 
     @Override
-    public Char call()
+    public $Char call()
     {
         return this;
     }

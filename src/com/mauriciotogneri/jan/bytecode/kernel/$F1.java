@@ -1,8 +1,8 @@
 package com.mauriciotogneri.jan.bytecode.kernel;
 
-public interface Function0<Z>
+public interface $F1<A, Z>
 {
-    Z call();
+    Z call(A a);
 
     String toString();
 }
