@@ -26,7 +26,7 @@ public class $Comparison
         return false;
     }
 
-    // = :: a $A b $A -> ?
+    // = ( $A a -> $A b -> ? )
     // = a b
 
     public static class $equals<A extends $F0> implements $F1<A, $F1<A, $F0<$Bool>>>
@@ -56,7 +56,7 @@ public class $Comparison
         }
     }
 
-    // != :: a $A b $A -> ?
+    // != ( $A a -> $A b -> ? )
     // != a b
 
     public static class $notEquals<A extends $F0> implements $F1<A, $F1<A, $F0<$Bool>>>
@@ -86,7 +86,7 @@ public class $Comparison
         }
     }
 
-    // < :: a % b % -> ?
+    // < ( % a -> % b -> ? )
     // < a b
 
     public static class $less implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Bool>>>
@@ -114,7 +114,7 @@ public class $Comparison
         }
     }
 
-    // <= :: a % b % -> ?
+    // <= ( % a -> % b -> ? )
     // <= a b
 
     public static class $lessOrEqual implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Bool>>>
@@ -142,7 +142,7 @@ public class $Comparison
         }
     }
 
-    // > :: a % b % -> ?
+    // > ( % a -> % b -> ? )
     // > a b
 
     public static class $greater implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Bool>>>
@@ -170,7 +170,7 @@ public class $Comparison
         }
     }
 
-    // >= :: a % b % -> ?
+    // >= ( % a -> % b -> ? )
     // >= a b
 
     public static class $greaterOrEqual implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Bool>>>

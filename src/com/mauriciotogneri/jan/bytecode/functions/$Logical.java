@@ -10,7 +10,7 @@ public class $Logical
     {
     }
 
-    // & :: a ? b ? -> ?
+    // & ( ? a -> ? b -> ? )
     // & a b
 
     public static class $and implements $F1<$F0<$Bool>, $F1<$F0<$Bool>, $F0<$Bool>>>
@@ -38,7 +38,7 @@ public class $Logical
         }
     }
 
-    // | :: a ? b ? -> ?
+    // | ( ? a -> ? b -> ? )
     // | a b
 
     public static class $or implements $F1<$F0<$Bool>, $F1<$F0<$Bool>, $F0<$Bool>>>
@@ -66,7 +66,7 @@ public class $Logical
         }
     }
 
-    // ! :: a ? -> ?
+    // ! ( ? a -> ? )
     // ! a
 
     public static class $neg implements $F1<$F0<$Bool>, $F0<$Bool>>

@@ -10,7 +10,7 @@ public class $Arithmetic
     {
     }
 
-    // + :: a % b % -> %
+    // + ( % a -> % b -> % )
     // + a b
 
     public static class $add implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
@@ -38,7 +38,7 @@ public class $Arithmetic
         }
     }
 
-    // - :: a % b % -> %
+    // - ( % a -> % b -> % )
     // - a b
 
     public static class $sub implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
@@ -66,7 +66,7 @@ public class $Arithmetic
         }
     }
 
-    // * :: a % b % -> %
+    // * ( % a -> % b -> % )
     // * a b
 
     public static class $mul implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
@@ -94,7 +94,7 @@ public class $Arithmetic
         }
     }
 
-    // / :: a % b % -> %
+    // / ( % a -> % b -> % )
     // / a b
 
     public static class $div implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
@@ -122,7 +122,7 @@ public class $Arithmetic
         }
     }
 
-    // /% :: a % b % -> %
+    // /% ( % a -> % b -> % )
     // /% a b
 
     public static class $divf implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
@@ -150,7 +150,7 @@ public class $Arithmetic
         }
     }
 
-    // ++ :: a % -> %
+    // ++ ( % a -> % )
     // ++ a
 
     public static class $inc implements $F1<$F0<$Num>, $F0<$Num>>
@@ -171,7 +171,7 @@ public class $Arithmetic
         }
     }
 
-    // -- :: a % -> %
+    // -- ( % a -> % )
     // -- a
 
     public static class $dec implements $F1<$F0<$Num>, $F0<$Num>>
@@ -192,7 +192,7 @@ public class $Arithmetic
         }
     }
 
-    // ^ :: a % b % -> %
+    // ^ ( % a -> % b -> % )
     // ^ a b
 
     public static class $pow implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
@@ -220,7 +220,7 @@ public class $Arithmetic
         }
     }
 
-    // % :: a % b % -> %
+    // % ( % a -> % b -> % )
     // % a b
 
     public static class $mod implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>

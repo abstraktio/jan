@@ -10,7 +10,7 @@ public class $List
     {
     }
 
-    // @ :: a % b [ $A ] -> $A
+    // @ ( % a -> [ $A ] b -> $A)
     // @ a b
 
     public static class $get<A> implements $F1<$Num, $F1<$Array<A>, A>>
@@ -31,7 +31,7 @@ public class $List
         }
     }
 
-    // ~ :: a % b [ $A ] -> [ $A ]
+    // ~ ( % a -> [ $A ] b -> [ $A ] )
     // ~ a b
 
     public static class $remove<A> implements $F1<$Num, $F1<$Array<A>, $Array<A>>>
@@ -52,7 +52,7 @@ public class $List
         }
     }
 
-    // # :: a [ $A ] -> %
+    // # ( [ $A ] a -> % )
     // # a
 
     public static class $length<A> implements $F1<$Array<A>, $Num>
@@ -66,7 +66,7 @@ public class $List
         }
     }
 
-    // +> :: a $A b [ $A ] -> [ $A ]
+    // +> ( $A a -> [ $A ] b -> [ $A ] )
     // +> a b
 
     public static class $addBefore<A> implements $F1<A, $F1<$Array<A>, $Array<A>>>
@@ -87,7 +87,7 @@ public class $List
         }
     }
 
-    // >+ :: a $A b [ $A ] -> [ $A ]
+    // >+ ( $A a -> [ $A ] b -> [ $A ] )
     // >+ a b
 
     public static class $addAfter<A> implements $F1<A, $F1<$Array<A>, $Array<A>>>

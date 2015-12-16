@@ -8,10 +8,10 @@ import com.mauriciotogneri.jan.bytecode.functions.$Comparison;
 import com.mauriciotogneri.jan.bytecode.functions.$Comparison.$equals;
 import com.mauriciotogneri.jan.bytecode.functions.$List.$addBefore;
 import com.mauriciotogneri.jan.bytecode.functions.$List.$length;
+import com.mauriciotogneri.jan.bytecode.kernel.$Eq;
 import com.mauriciotogneri.jan.bytecode.kernel.$F0;
 import com.mauriciotogneri.jan.bytecode.kernel.$F1;
 import com.mauriciotogneri.jan.bytecode.kernel.$T2;
-import com.mauriciotogneri.jan.bytecode.kernel.$Eq;
 import com.mauriciotogneri.jan.bytecode.objects.$Array;
 import com.mauriciotogneri.jan.bytecode.objects.$Bool;
 import com.mauriciotogneri.jan.bytecode.objects.$Num;
@@ -19,7 +19,7 @@ import com.mauriciotogneri.jan.bytecode.objects.$Num;
 // TODO: make all classes, parameters and variables final
 public class Test
 {
-    // factorial :: n % -> %
+    // factorial ( % n -> % )
     // ? = n 0 1
     // * n factorial - n 1
 
@@ -39,7 +39,7 @@ public class Test
         }
     }
 
-    // map :: function ( $A -> $B ) array [ $A ] -> [ $B ]
+    // map :: ( ( $A -> $B ) function -> [ $A ] array -> [ $B ] )
     // ? = 0 # array [ ]
     // _ x  @ 0 array
     // _ xs - 0 array
@@ -77,7 +77,7 @@ public class Test
         }
     }
 
-    // filter :: f ( $A -> ? ) array [ $A ] -> [ $A ]
+    // filter :: ( ( $A -> ? ) f -> [ $A ] array -> [ $A ] )
     // ? ( = 0 # array ) [ ]
     // _ x  @ 0 array
     // _ xs - 0 array
@@ -114,7 +114,7 @@ public class Test
         }
     }
 
-    // multiplyBy :: n % -> ( % -> % )
+    // multiplyBy ( % n -> ( % -> % ) )
     // * n
 
     public static class multiplyBy implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
@@ -128,7 +128,7 @@ public class Test
         }
     }
 
-    // pi -> %
+    // pi %
     // 3.13159
 
     public static class pi implements $F0<$Num>
@@ -142,7 +142,7 @@ public class Test
         }
     }
 
-    // custom :: a % b % c % -> %
+    // custom ( % a -> % b -> % c -> % )
     // + * c b a
 
     public static class custom implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>>
@@ -170,7 +170,7 @@ public class Test
         }
     }
 
-    // doubleMe :: -> ( % -> % )
+    // doubleMe ( % -> % )
     // * 2
 
     public static class doubleMe implements $F0<$F1<$F0<$Num>, $F0<$Num>>>
@@ -184,7 +184,7 @@ public class Test
         }
     }
 
-    // duplicate :: a % -> %
+    // duplicate ( % a -> % )
     // * a 2
 
     public static class duplicate implements $F1<$F0<$Num>, $F0<$Num>>
@@ -198,7 +198,7 @@ public class Test
         }
     }
 
-    // multi :: a % b % -> %
+    // multi ( % a -> % b -> % )
     // * a b
 
     public static class multi implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
@@ -225,7 +225,27 @@ public class Test
         }
     }
 
-    // even :: a % -> ?
+    // multiplication ( % -> % -> % )
+    // *
+
+    public static class multiplication implements $F0<$F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>>
+    {
+        public static final multiplication instance = new multiplication();
+
+        @Override
+        public $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>> call()
+        {
+            return $mul.instance;
+        }
+
+        @Override
+        public String toString()
+        {
+            return "multiplication :: -> ( % -> % )";
+        }
+    }
+
+    // even ( % a -> ? )
     // = 0 % a 2
 
     public static class even implements $F1<$F0<$Num>, $F0<$Bool>>
@@ -239,7 +259,7 @@ public class Test
         }
     }
 
-    // mul3 :: a % -> %
+    // mul3 ( % a -> % )
     // * 3 a
 
     public static class mul3 implements $F1<$F0<$Num>, $F0<$Num>>
@@ -266,7 +286,7 @@ public class Test
         }
     }
 
-    // mul3AndAdd :: a % b % -> %
+    // mul3AndAdd ( % a -> % b -> % )
     // + * 3 a b
 
     public static class mul3AndAdd implements $F1<$F0<$Num>, $F1<$F0<$Num>, $F0<$Num>>>
@@ -294,7 +314,7 @@ public class Test
         }
     }
 
-    // addPoints :: p1 { Num Num } p2 { Num Num } -> { Num Num }
+    // addPoints ( { Num Num } p1 -> { Num Num } p2 -> { Num Num } )
     // { ( + @0 p1 @0 p2 ) ( + @1 p1 @1 p2 ) }
 
     public static class addPoints implements $F1<Tuple_NumNum, $F1<Tuple_NumNum, Tuple_NumNum>>
@@ -351,6 +371,7 @@ public class Test
         check(mul3AndAdd.instance.call($Num.create(2)).call($Num.create(7)), $Num.create(13));
         check(multi.instance.call($Num.create(3)).call($Num.create(7)), $Num.create(21));
         check(multiplyBy.instance.call(pi.instance).call($Num.create(2)), $Num.create(6.28318));
+        check(multiplication.instance.call().call($Num.create(3)).call($Num.create(4)), $Num.create(12));
 
         $F0<$Num> n = $add.instance.call($Num.create(20)).call($Num.create(3));
         check(duplicate.instance.call(n), $Num.create(46));
@@ -366,7 +387,7 @@ public class Test
         System.out.println(listOfFunctions.get($Num.create(0)).toString());
 
         // lambda example
-        // ( \ a % b % -> % => + a b )
+        // ( \ % a -> % b -> % => + a b )
     }
 
     private static <A> void check($F0<A> c1, $F0<A> c2)
@@ -381,6 +402,8 @@ public class Test
         else
         {
             System.out.println("false   " + c1.call() + " " + c2.call());
+
+            throw new RuntimeException();
         }
     }
 
